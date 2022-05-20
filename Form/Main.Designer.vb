@@ -1,0 +1,515 @@
+﻿<Global.Microsoft.VisualBasic.CompilerServices.DesignerGenerated()>
+Partial Class Main
+    Inherits System.Windows.Forms.Form
+
+    'Form overrides dispose to clean up the component list.
+    <System.Diagnostics.DebuggerNonUserCode()>
+    Protected Overrides Sub Dispose(ByVal disposing As Boolean)
+        Try
+            If disposing AndAlso components IsNot Nothing Then
+                components.Dispose()
+            End If
+        Finally
+            MyBase.Dispose(disposing)
+        End Try
+    End Sub
+
+    'Required by the Windows Form Designer
+    Private components As System.ComponentModel.IContainer
+
+    'NOTE: The following procedure is required by the Windows Form Designer
+    'It can be modified using the Windows Form Designer.  
+    'Do not modify it using the code editor.
+    <System.Diagnostics.DebuggerStepThrough()>
+    Private Sub InitializeComponent()
+        Me.components = New System.ComponentModel.Container()
+        Dim resources As System.ComponentModel.ComponentResourceManager = New System.ComponentModel.ComponentResourceManager(GetType(Main))
+        Me.pnlTop = New System.Windows.Forms.Panel()
+        Me.lblView = New System.Windows.Forms.Label()
+        Me.cmbView = New System.Windows.Forms.ComboBox()
+        Me.btnRefresh = New PinkieControls.ButtonXP()
+        Me.llbEquals = New System.Windows.Forms.Label()
+        Me.txtPercentage = New System.Windows.Forms.Label()
+        Me.txtTotal = New System.Windows.Forms.Label()
+        Me.lblCompletion = New System.Windows.Forms.Label()
+        Me.lblMonth = New System.Windows.Forms.Label()
+        Me.cmbMonth = New SergeUtils.EasyCompletionComboBox()
+        Me.btnCurrent = New PinkieControls.ButtonXP()
+        Me.btnGo = New PinkieControls.ButtonXP()
+        Me.lblYear = New System.Windows.Forms.Label()
+        Me.txtYear = New System.Windows.Forms.MaskedTextBox()
+        Me.lblYearMonth = New System.Windows.Forms.Label()
+        Me.txtCompleted = New System.Windows.Forms.Label()
+        Me.lblOver = New System.Windows.Forms.Label()
+        Me.tmrMain = New System.Windows.Forms.Timer(Me.components)
+        Me.tlpCalendar = New PMSchedule.ExtTableLayoutPanel()
+        Me.lblSunday = New System.Windows.Forms.Label()
+        Me.lblWednesday = New System.Windows.Forms.Label()
+        Me.lblMonday = New System.Windows.Forms.Label()
+        Me.lblTuesday = New System.Windows.Forms.Label()
+        Me.lblThursday = New System.Windows.Forms.Label()
+        Me.lblFriday = New System.Windows.Forms.Label()
+        Me.lblSaturday = New System.Windows.Forms.Label()
+        Me.lblScheduledHeader = New System.Windows.Forms.Label()
+        Me.pnlTop.SuspendLayout()
+        Me.tlpCalendar.SuspendLayout()
+        Me.SuspendLayout()
+        '
+        'pnlTop
+        '
+        Me.pnlTop.Controls.Add(Me.lblView)
+        Me.pnlTop.Controls.Add(Me.cmbView)
+        Me.pnlTop.Controls.Add(Me.btnRefresh)
+        Me.pnlTop.Controls.Add(Me.llbEquals)
+        Me.pnlTop.Controls.Add(Me.txtPercentage)
+        Me.pnlTop.Controls.Add(Me.txtTotal)
+        Me.pnlTop.Controls.Add(Me.lblCompletion)
+        Me.pnlTop.Controls.Add(Me.lblMonth)
+        Me.pnlTop.Controls.Add(Me.cmbMonth)
+        Me.pnlTop.Controls.Add(Me.btnCurrent)
+        Me.pnlTop.Controls.Add(Me.btnGo)
+        Me.pnlTop.Controls.Add(Me.lblYear)
+        Me.pnlTop.Controls.Add(Me.txtYear)
+        Me.pnlTop.Controls.Add(Me.lblYearMonth)
+        Me.pnlTop.Controls.Add(Me.txtCompleted)
+        Me.pnlTop.Controls.Add(Me.lblOver)
+        Me.pnlTop.Dock = System.Windows.Forms.DockStyle.Top
+        Me.pnlTop.Location = New System.Drawing.Point(0, 0)
+        Me.pnlTop.Name = "pnlTop"
+        Me.pnlTop.Size = New System.Drawing.Size(1384, 60)
+        Me.pnlTop.TabIndex = 0
+        '
+        'lblView
+        '
+        Me.lblView.Anchor = CType((System.Windows.Forms.AnchorStyles.Top Or System.Windows.Forms.AnchorStyles.Right), System.Windows.Forms.AnchorStyles)
+        Me.lblView.BackColor = System.Drawing.SystemColors.Control
+        Me.lblView.BorderStyle = System.Windows.Forms.BorderStyle.FixedSingle
+        Me.lblView.Font = New System.Drawing.Font("Segoe UI", 9.0!)
+        Me.lblView.ForeColor = System.Drawing.Color.Black
+        Me.lblView.Location = New System.Drawing.Point(736, 22)
+        Me.lblView.Name = "lblView"
+        Me.lblView.Padding = New System.Windows.Forms.Padding(5, 0, 0, 0)
+        Me.lblView.Size = New System.Drawing.Size(55, 25)
+        Me.lblView.TabIndex = 224
+        Me.lblView.Text = "View"
+        Me.lblView.TextAlign = System.Drawing.ContentAlignment.MiddleLeft
+        '
+        'cmbView
+        '
+        Me.cmbView.Anchor = CType((System.Windows.Forms.AnchorStyles.Top Or System.Windows.Forms.AnchorStyles.Right), System.Windows.Forms.AnchorStyles)
+        Me.cmbView.DropDownStyle = System.Windows.Forms.ComboBoxStyle.DropDownList
+        Me.cmbView.Font = New System.Drawing.Font("Segoe UI", 10.0!)
+        Me.cmbView.FormattingEnabled = True
+        Me.cmbView.Location = New System.Drawing.Point(790, 22)
+        Me.cmbView.Name = "cmbView"
+        Me.cmbView.Size = New System.Drawing.Size(90, 25)
+        Me.cmbView.TabIndex = 9
+        '
+        'btnRefresh
+        '
+        Me.btnRefresh.Anchor = CType((System.Windows.Forms.AnchorStyles.Top Or System.Windows.Forms.AnchorStyles.Right), System.Windows.Forms.AnchorStyles)
+        Me.btnRefresh.BackColor = System.Drawing.Color.FromArgb(CType(CType(0, Byte), Integer), CType(CType(240, Byte), Integer), CType(CType(240, Byte), Integer), CType(CType(240, Byte), Integer))
+        Me.btnRefresh.DefaultScheme = True
+        Me.btnRefresh.DialogResult = System.Windows.Forms.DialogResult.None
+        Me.btnRefresh.Font = New System.Drawing.Font("Verdana", 9.0!)
+        Me.btnRefresh.Hint = "Refresh"
+        Me.btnRefresh.Image = CType(resources.GetObject("btnRefresh.Image"), System.Drawing.Image)
+        Me.btnRefresh.Location = New System.Drawing.Point(1334, 20)
+        Me.btnRefresh.Name = "btnRefresh"
+        Me.btnRefresh.Scheme = PinkieControls.ButtonXP.Schemes.Blue
+        Me.btnRefresh.Size = New System.Drawing.Size(42, 28)
+        Me.btnRefresh.TabIndex = 233
+        '
+        'llbEquals
+        '
+        Me.llbEquals.Anchor = CType((System.Windows.Forms.AnchorStyles.Top Or System.Windows.Forms.AnchorStyles.Right), System.Windows.Forms.AnchorStyles)
+        Me.llbEquals.AutoSize = True
+        Me.llbEquals.Font = New System.Drawing.Font("Segoe UI", 11.0!, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, CType(0, Byte))
+        Me.llbEquals.Location = New System.Drawing.Point(484, 20)
+        Me.llbEquals.Name = "llbEquals"
+        Me.llbEquals.Size = New System.Drawing.Size(19, 20)
+        Me.llbEquals.TabIndex = 232
+        Me.llbEquals.Text = "="
+        '
+        'txtPercentage
+        '
+        Me.txtPercentage.Anchor = CType((System.Windows.Forms.AnchorStyles.Top Or System.Windows.Forms.AnchorStyles.Right), System.Windows.Forms.AnchorStyles)
+        Me.txtPercentage.Font = New System.Drawing.Font("Segoe UI", 35.0!, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, CType(0, Byte))
+        Me.txtPercentage.ForeColor = System.Drawing.Color.Black
+        Me.txtPercentage.Location = New System.Drawing.Point(509, -1)
+        Me.txtPercentage.Name = "txtPercentage"
+        Me.txtPercentage.Size = New System.Drawing.Size(149, 62)
+        Me.txtPercentage.TabIndex = 231
+        Me.txtPercentage.Text = "100%"
+        Me.txtPercentage.TextAlign = System.Drawing.ContentAlignment.MiddleCenter
+        '
+        'txtTotal
+        '
+        Me.txtTotal.Anchor = CType((System.Windows.Forms.AnchorStyles.Top Or System.Windows.Forms.AnchorStyles.Right), System.Windows.Forms.AnchorStyles)
+        Me.txtTotal.AutoSize = True
+        Me.txtTotal.Font = New System.Drawing.Font("Segoe UI", 15.0!, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, CType(0, Byte))
+        Me.txtTotal.Location = New System.Drawing.Point(433, 21)
+        Me.txtTotal.Margin = New System.Windows.Forms.Padding(0)
+        Me.txtTotal.Name = "txtTotal"
+        Me.txtTotal.Size = New System.Drawing.Size(45, 28)
+        Me.txtTotal.TabIndex = 228
+        Me.txtTotal.Text = "100"
+        Me.txtTotal.TextAlign = System.Drawing.ContentAlignment.MiddleLeft
+        '
+        'lblCompletion
+        '
+        Me.lblCompletion.Anchor = CType((System.Windows.Forms.AnchorStyles.Top Or System.Windows.Forms.AnchorStyles.Right), System.Windows.Forms.AnchorStyles)
+        Me.lblCompletion.AutoSize = True
+        Me.lblCompletion.Font = New System.Drawing.Font("Segoe UI", 11.0!, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, CType(0, Byte))
+        Me.lblCompletion.Location = New System.Drawing.Point(248, 20)
+        Me.lblCompletion.Name = "lblCompletion"
+        Me.lblCompletion.Size = New System.Drawing.Size(124, 20)
+        Me.lblCompletion.TabIndex = 226
+        Me.lblCompletion.Text = "Completion Rate:"
+        '
+        'lblMonth
+        '
+        Me.lblMonth.Anchor = CType((System.Windows.Forms.AnchorStyles.Top Or System.Windows.Forms.AnchorStyles.Right), System.Windows.Forms.AnchorStyles)
+        Me.lblMonth.BackColor = System.Drawing.SystemColors.Control
+        Me.lblMonth.BorderStyle = System.Windows.Forms.BorderStyle.FixedSingle
+        Me.lblMonth.Font = New System.Drawing.Font("Segoe UI", 9.0!)
+        Me.lblMonth.ForeColor = System.Drawing.Color.Black
+        Me.lblMonth.Location = New System.Drawing.Point(885, 22)
+        Me.lblMonth.Name = "lblMonth"
+        Me.lblMonth.Padding = New System.Windows.Forms.Padding(5, 0, 0, 0)
+        Me.lblMonth.Size = New System.Drawing.Size(55, 25)
+        Me.lblMonth.TabIndex = 218
+        Me.lblMonth.Text = "Month"
+        Me.lblMonth.TextAlign = System.Drawing.ContentAlignment.MiddleLeft
+        '
+        'cmbMonth
+        '
+        Me.cmbMonth.Anchor = CType((System.Windows.Forms.AnchorStyles.Top Or System.Windows.Forms.AnchorStyles.Right), System.Windows.Forms.AnchorStyles)
+        Me.cmbMonth.Font = New System.Drawing.Font("Segoe UI", 10.0!)
+        Me.cmbMonth.FormattingEnabled = True
+        Me.cmbMonth.Location = New System.Drawing.Point(939, 22)
+        Me.cmbMonth.Name = "cmbMonth"
+        Me.cmbMonth.Size = New System.Drawing.Size(140, 25)
+        Me.cmbMonth.TabIndex = 217
+        '
+        'btnCurrent
+        '
+        Me.btnCurrent.Anchor = CType((System.Windows.Forms.AnchorStyles.Top Or System.Windows.Forms.AnchorStyles.Right), System.Windows.Forms.AnchorStyles)
+        Me.btnCurrent.BackColor = System.Drawing.Color.FromArgb(CType(CType(0, Byte), Integer), CType(CType(240, Byte), Integer), CType(CType(240, Byte), Integer), CType(CType(240, Byte), Integer))
+        Me.btnCurrent.DefaultScheme = True
+        Me.btnCurrent.DialogResult = System.Windows.Forms.DialogResult.None
+        Me.btnCurrent.Font = New System.Drawing.Font("Verdana", 9.0!)
+        Me.btnCurrent.Hint = "Go to current month"
+        Me.btnCurrent.Image = CType(resources.GetObject("btnCurrent.Image"), System.Drawing.Image)
+        Me.btnCurrent.Location = New System.Drawing.Point(1289, 20)
+        Me.btnCurrent.Name = "btnCurrent"
+        Me.btnCurrent.Scheme = PinkieControls.ButtonXP.Schemes.Blue
+        Me.btnCurrent.Size = New System.Drawing.Size(42, 28)
+        Me.btnCurrent.TabIndex = 221
+        '
+        'btnGo
+        '
+        Me.btnGo.Anchor = CType((System.Windows.Forms.AnchorStyles.Top Or System.Windows.Forms.AnchorStyles.Right), System.Windows.Forms.AnchorStyles)
+        Me.btnGo.BackColor = System.Drawing.Color.FromArgb(CType(CType(0, Byte), Integer), CType(CType(240, Byte), Integer), CType(CType(240, Byte), Integer), CType(CType(240, Byte), Integer))
+        Me.btnGo.DefaultScheme = True
+        Me.btnGo.DialogResult = System.Windows.Forms.DialogResult.None
+        Me.btnGo.Font = New System.Drawing.Font("Verdana", 9.0!)
+        Me.btnGo.Hint = ""
+        Me.btnGo.Location = New System.Drawing.Point(1201, 20)
+        Me.btnGo.Name = "btnGo"
+        Me.btnGo.Scheme = PinkieControls.ButtonXP.Schemes.Blue
+        Me.btnGo.Size = New System.Drawing.Size(85, 28)
+        Me.btnGo.TabIndex = 15
+        Me.btnGo.Text = "Go"
+        '
+        'lblYear
+        '
+        Me.lblYear.Anchor = CType((System.Windows.Forms.AnchorStyles.Top Or System.Windows.Forms.AnchorStyles.Right), System.Windows.Forms.AnchorStyles)
+        Me.lblYear.BackColor = System.Drawing.SystemColors.Control
+        Me.lblYear.BorderStyle = System.Windows.Forms.BorderStyle.FixedSingle
+        Me.lblYear.Font = New System.Drawing.Font("Segoe UI", 9.0!)
+        Me.lblYear.ForeColor = System.Drawing.Color.Black
+        Me.lblYear.Location = New System.Drawing.Point(1084, 22)
+        Me.lblYear.Name = "lblYear"
+        Me.lblYear.Padding = New System.Windows.Forms.Padding(5, 0, 0, 0)
+        Me.lblYear.Size = New System.Drawing.Size(55, 25)
+        Me.lblYear.TabIndex = 219
+        Me.lblYear.Text = "Year"
+        Me.lblYear.TextAlign = System.Drawing.ContentAlignment.MiddleLeft
+        '
+        'txtYear
+        '
+        Me.txtYear.Anchor = CType((System.Windows.Forms.AnchorStyles.Top Or System.Windows.Forms.AnchorStyles.Right), System.Windows.Forms.AnchorStyles)
+        Me.txtYear.BorderStyle = System.Windows.Forms.BorderStyle.FixedSingle
+        Me.txtYear.Font = New System.Drawing.Font("Segoe UI", 10.0!)
+        Me.txtYear.Location = New System.Drawing.Point(1138, 22)
+        Me.txtYear.Name = "txtYear"
+        Me.txtYear.Size = New System.Drawing.Size(60, 25)
+        Me.txtYear.TabIndex = 220
+        Me.txtYear.Text = "2022"
+        Me.txtYear.TextAlign = System.Windows.Forms.HorizontalAlignment.Center
+        '
+        'lblYearMonth
+        '
+        Me.lblYearMonth.AutoSize = True
+        Me.lblYearMonth.BackColor = System.Drawing.Color.Transparent
+        Me.lblYearMonth.Font = New System.Drawing.Font("Microsoft Sans Serif", 24.0!, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, CType(129, Byte))
+        Me.lblYearMonth.ForeColor = System.Drawing.Color.Black
+        Me.lblYearMonth.Location = New System.Drawing.Point(6, 10)
+        Me.lblYearMonth.Margin = New System.Windows.Forms.Padding(2, 0, 2, 0)
+        Me.lblYearMonth.Name = "lblYearMonth"
+        Me.lblYearMonth.Size = New System.Drawing.Size(193, 37)
+        Me.lblYearMonth.TabIndex = 14
+        Me.lblYearMonth.Text = "Month Year"
+        '
+        'txtCompleted
+        '
+        Me.txtCompleted.Anchor = CType((System.Windows.Forms.AnchorStyles.Top Or System.Windows.Forms.AnchorStyles.Right), System.Windows.Forms.AnchorStyles)
+        Me.txtCompleted.Font = New System.Drawing.Font("Segoe UI", 15.0!, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, CType(0, Byte))
+        Me.txtCompleted.Location = New System.Drawing.Point(378, 9)
+        Me.txtCompleted.Margin = New System.Windows.Forms.Padding(0)
+        Me.txtCompleted.Name = "txtCompleted"
+        Me.txtCompleted.Size = New System.Drawing.Size(45, 28)
+        Me.txtCompleted.TabIndex = 227
+        Me.txtCompleted.Text = "100"
+        Me.txtCompleted.TextAlign = System.Drawing.ContentAlignment.MiddleRight
+        '
+        'lblOver
+        '
+        Me.lblOver.Anchor = CType((System.Windows.Forms.AnchorStyles.Top Or System.Windows.Forms.AnchorStyles.Right), System.Windows.Forms.AnchorStyles)
+        Me.lblOver.AutoSize = True
+        Me.lblOver.BackColor = System.Drawing.Color.Transparent
+        Me.lblOver.Font = New System.Drawing.Font("Segoe UI", 30.0!, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, CType(0, Byte))
+        Me.lblOver.Location = New System.Drawing.Point(409, 2)
+        Me.lblOver.Margin = New System.Windows.Forms.Padding(0)
+        Me.lblOver.Name = "lblOver"
+        Me.lblOver.Size = New System.Drawing.Size(39, 54)
+        Me.lblOver.TabIndex = 229
+        Me.lblOver.Text = "/"
+        '
+        'tmrMain
+        '
+        Me.tmrMain.Interval = 1000
+        '
+        'tlpCalendar
+        '
+        Me.tlpCalendar.CellBorderStyle = System.Windows.Forms.TableLayoutPanelCellBorderStyle.[Single]
+        Me.tlpCalendar.ColumnCount = 8
+        Me.tlpCalendar.ColumnStyles.Add(New System.Windows.Forms.ColumnStyle(System.Windows.Forms.SizeType.Absolute, 200.0!))
+        Me.tlpCalendar.ColumnStyles.Add(New System.Windows.Forms.ColumnStyle(System.Windows.Forms.SizeType.Percent, 14.28571!))
+        Me.tlpCalendar.ColumnStyles.Add(New System.Windows.Forms.ColumnStyle(System.Windows.Forms.SizeType.Percent, 14.28571!))
+        Me.tlpCalendar.ColumnStyles.Add(New System.Windows.Forms.ColumnStyle(System.Windows.Forms.SizeType.Percent, 14.28571!))
+        Me.tlpCalendar.ColumnStyles.Add(New System.Windows.Forms.ColumnStyle(System.Windows.Forms.SizeType.Percent, 14.28571!))
+        Me.tlpCalendar.ColumnStyles.Add(New System.Windows.Forms.ColumnStyle(System.Windows.Forms.SizeType.Percent, 14.28571!))
+        Me.tlpCalendar.ColumnStyles.Add(New System.Windows.Forms.ColumnStyle(System.Windows.Forms.SizeType.Percent, 14.28571!))
+        Me.tlpCalendar.ColumnStyles.Add(New System.Windows.Forms.ColumnStyle(System.Windows.Forms.SizeType.Percent, 14.28571!))
+        Me.tlpCalendar.Controls.Add(Me.lblSunday, 1, 0)
+        Me.tlpCalendar.Controls.Add(Me.lblWednesday, 4, 0)
+        Me.tlpCalendar.Controls.Add(Me.lblMonday, 2, 0)
+        Me.tlpCalendar.Controls.Add(Me.lblTuesday, 3, 0)
+        Me.tlpCalendar.Controls.Add(Me.lblThursday, 5, 0)
+        Me.tlpCalendar.Controls.Add(Me.lblFriday, 6, 0)
+        Me.tlpCalendar.Controls.Add(Me.lblSaturday, 7, 0)
+        Me.tlpCalendar.Controls.Add(Me.lblScheduledHeader, 0, 0)
+        Me.tlpCalendar.Dock = System.Windows.Forms.DockStyle.Fill
+        Me.tlpCalendar.Font = New System.Drawing.Font("Segoe UI", 10.5!, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, CType(0, Byte))
+        Me.tlpCalendar.Location = New System.Drawing.Point(0, 60)
+        Me.tlpCalendar.Name = "tlpCalendar"
+        Me.tlpCalendar.RowCount = 7
+        Me.tlpCalendar.RowStyles.Add(New System.Windows.Forms.RowStyle(System.Windows.Forms.SizeType.Percent, 14.28571!))
+        Me.tlpCalendar.RowStyles.Add(New System.Windows.Forms.RowStyle(System.Windows.Forms.SizeType.Percent, 14.28572!))
+        Me.tlpCalendar.RowStyles.Add(New System.Windows.Forms.RowStyle(System.Windows.Forms.SizeType.Percent, 14.28572!))
+        Me.tlpCalendar.RowStyles.Add(New System.Windows.Forms.RowStyle(System.Windows.Forms.SizeType.Percent, 14.28572!))
+        Me.tlpCalendar.RowStyles.Add(New System.Windows.Forms.RowStyle(System.Windows.Forms.SizeType.Percent, 14.28572!))
+        Me.tlpCalendar.RowStyles.Add(New System.Windows.Forms.RowStyle(System.Windows.Forms.SizeType.Percent, 14.28571!))
+        Me.tlpCalendar.RowStyles.Add(New System.Windows.Forms.RowStyle(System.Windows.Forms.SizeType.Percent, 14.28572!))
+        Me.tlpCalendar.Size = New System.Drawing.Size(1384, 639)
+        Me.tlpCalendar.TabIndex = 2
+        '
+        'lblSunday
+        '
+        Me.lblSunday.Anchor = CType((((System.Windows.Forms.AnchorStyles.Top Or System.Windows.Forms.AnchorStyles.Bottom) _
+            Or System.Windows.Forms.AnchorStyles.Left) _
+            Or System.Windows.Forms.AnchorStyles.Right), System.Windows.Forms.AnchorStyles)
+        Me.lblSunday.BackColor = System.Drawing.Color.Transparent
+        Me.lblSunday.Cursor = System.Windows.Forms.Cursors.IBeam
+        Me.lblSunday.Font = New System.Drawing.Font("Microsoft Sans Serif", 12.0!, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, CType(129, Byte))
+        Me.lblSunday.ForeColor = System.Drawing.Color.Black
+        Me.lblSunday.Location = New System.Drawing.Point(204, 1)
+        Me.lblSunday.Margin = New System.Windows.Forms.Padding(2, 0, 2, 0)
+        Me.lblSunday.Name = "lblSunday"
+        Me.lblSunday.Size = New System.Drawing.Size(163, 90)
+        Me.lblSunday.TabIndex = 1
+        Me.lblSunday.Text = "SUN"
+        Me.lblSunday.TextAlign = System.Drawing.ContentAlignment.MiddleCenter
+        '
+        'lblWednesday
+        '
+        Me.lblWednesday.Anchor = CType((((System.Windows.Forms.AnchorStyles.Top Or System.Windows.Forms.AnchorStyles.Bottom) _
+            Or System.Windows.Forms.AnchorStyles.Left) _
+            Or System.Windows.Forms.AnchorStyles.Right), System.Windows.Forms.AnchorStyles)
+        Me.lblWednesday.BackColor = System.Drawing.Color.Transparent
+        Me.lblWednesday.Cursor = System.Windows.Forms.Cursors.IBeam
+        Me.lblWednesday.Font = New System.Drawing.Font("Microsoft Sans Serif", 12.0!, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, CType(129, Byte))
+        Me.lblWednesday.ForeColor = System.Drawing.Color.Black
+        Me.lblWednesday.Location = New System.Drawing.Point(708, 1)
+        Me.lblWednesday.Margin = New System.Windows.Forms.Padding(2, 0, 2, 0)
+        Me.lblWednesday.Name = "lblWednesday"
+        Me.lblWednesday.Size = New System.Drawing.Size(163, 90)
+        Me.lblWednesday.TabIndex = 3
+        Me.lblWednesday.Text = "WED"
+        Me.lblWednesday.TextAlign = System.Drawing.ContentAlignment.MiddleCenter
+        '
+        'lblMonday
+        '
+        Me.lblMonday.Anchor = CType((((System.Windows.Forms.AnchorStyles.Top Or System.Windows.Forms.AnchorStyles.Bottom) _
+            Or System.Windows.Forms.AnchorStyles.Left) _
+            Or System.Windows.Forms.AnchorStyles.Right), System.Windows.Forms.AnchorStyles)
+        Me.lblMonday.BackColor = System.Drawing.Color.Transparent
+        Me.lblMonday.Cursor = System.Windows.Forms.Cursors.IBeam
+        Me.lblMonday.Font = New System.Drawing.Font("Microsoft Sans Serif", 12.0!, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, CType(129, Byte))
+        Me.lblMonday.ForeColor = System.Drawing.Color.Black
+        Me.lblMonday.Location = New System.Drawing.Point(372, 1)
+        Me.lblMonday.Margin = New System.Windows.Forms.Padding(2, 0, 2, 0)
+        Me.lblMonday.Name = "lblMonday"
+        Me.lblMonday.Size = New System.Drawing.Size(163, 90)
+        Me.lblMonday.TabIndex = 4
+        Me.lblMonday.Text = "MON"
+        Me.lblMonday.TextAlign = System.Drawing.ContentAlignment.MiddleCenter
+        '
+        'lblTuesday
+        '
+        Me.lblTuesday.Anchor = CType((((System.Windows.Forms.AnchorStyles.Top Or System.Windows.Forms.AnchorStyles.Bottom) _
+            Or System.Windows.Forms.AnchorStyles.Left) _
+            Or System.Windows.Forms.AnchorStyles.Right), System.Windows.Forms.AnchorStyles)
+        Me.lblTuesday.BackColor = System.Drawing.Color.Transparent
+        Me.lblTuesday.Cursor = System.Windows.Forms.Cursors.IBeam
+        Me.lblTuesday.Font = New System.Drawing.Font("Microsoft Sans Serif", 12.0!, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, CType(129, Byte))
+        Me.lblTuesday.ForeColor = System.Drawing.Color.Black
+        Me.lblTuesday.Location = New System.Drawing.Point(540, 1)
+        Me.lblTuesday.Margin = New System.Windows.Forms.Padding(2, 0, 2, 0)
+        Me.lblTuesday.Name = "lblTuesday"
+        Me.lblTuesday.Size = New System.Drawing.Size(163, 90)
+        Me.lblTuesday.TabIndex = 2
+        Me.lblTuesday.Text = "TUE"
+        Me.lblTuesday.TextAlign = System.Drawing.ContentAlignment.MiddleCenter
+        '
+        'lblThursday
+        '
+        Me.lblThursday.Anchor = CType((((System.Windows.Forms.AnchorStyles.Top Or System.Windows.Forms.AnchorStyles.Bottom) _
+            Or System.Windows.Forms.AnchorStyles.Left) _
+            Or System.Windows.Forms.AnchorStyles.Right), System.Windows.Forms.AnchorStyles)
+        Me.lblThursday.BackColor = System.Drawing.Color.Transparent
+        Me.lblThursday.Cursor = System.Windows.Forms.Cursors.IBeam
+        Me.lblThursday.Font = New System.Drawing.Font("Microsoft Sans Serif", 12.0!, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, CType(129, Byte))
+        Me.lblThursday.ForeColor = System.Drawing.Color.Black
+        Me.lblThursday.Location = New System.Drawing.Point(876, 1)
+        Me.lblThursday.Margin = New System.Windows.Forms.Padding(2, 0, 2, 0)
+        Me.lblThursday.Name = "lblThursday"
+        Me.lblThursday.Size = New System.Drawing.Size(163, 90)
+        Me.lblThursday.TabIndex = 5
+        Me.lblThursday.Text = "THU"
+        Me.lblThursday.TextAlign = System.Drawing.ContentAlignment.MiddleCenter
+        '
+        'lblFriday
+        '
+        Me.lblFriday.Anchor = CType((((System.Windows.Forms.AnchorStyles.Top Or System.Windows.Forms.AnchorStyles.Bottom) _
+            Or System.Windows.Forms.AnchorStyles.Left) _
+            Or System.Windows.Forms.AnchorStyles.Right), System.Windows.Forms.AnchorStyles)
+        Me.lblFriday.BackColor = System.Drawing.Color.Transparent
+        Me.lblFriday.Cursor = System.Windows.Forms.Cursors.IBeam
+        Me.lblFriday.Font = New System.Drawing.Font("Microsoft Sans Serif", 12.0!, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, CType(129, Byte))
+        Me.lblFriday.ForeColor = System.Drawing.Color.Black
+        Me.lblFriday.Location = New System.Drawing.Point(1044, 1)
+        Me.lblFriday.Margin = New System.Windows.Forms.Padding(2, 0, 2, 0)
+        Me.lblFriday.Name = "lblFriday"
+        Me.lblFriday.Size = New System.Drawing.Size(163, 90)
+        Me.lblFriday.TabIndex = 6
+        Me.lblFriday.Text = "FRI"
+        Me.lblFriday.TextAlign = System.Drawing.ContentAlignment.MiddleCenter
+        '
+        'lblSaturday
+        '
+        Me.lblSaturday.Anchor = CType((((System.Windows.Forms.AnchorStyles.Top Or System.Windows.Forms.AnchorStyles.Bottom) _
+            Or System.Windows.Forms.AnchorStyles.Left) _
+            Or System.Windows.Forms.AnchorStyles.Right), System.Windows.Forms.AnchorStyles)
+        Me.lblSaturday.BackColor = System.Drawing.Color.Transparent
+        Me.lblSaturday.Cursor = System.Windows.Forms.Cursors.IBeam
+        Me.lblSaturday.Font = New System.Drawing.Font("Microsoft Sans Serif", 12.0!, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, CType(129, Byte))
+        Me.lblSaturday.ForeColor = System.Drawing.Color.Black
+        Me.lblSaturday.Location = New System.Drawing.Point(1212, 1)
+        Me.lblSaturday.Margin = New System.Windows.Forms.Padding(2, 0, 2, 0)
+        Me.lblSaturday.Name = "lblSaturday"
+        Me.lblSaturday.Size = New System.Drawing.Size(169, 90)
+        Me.lblSaturday.TabIndex = 7
+        Me.lblSaturday.Text = "SAT"
+        Me.lblSaturday.TextAlign = System.Drawing.ContentAlignment.MiddleCenter
+        '
+        'lblScheduled
+        '
+        Me.lblScheduledHeader.Anchor = CType((((System.Windows.Forms.AnchorStyles.Top Or System.Windows.Forms.AnchorStyles.Bottom) _
+            Or System.Windows.Forms.AnchorStyles.Left) _
+            Or System.Windows.Forms.AnchorStyles.Right), System.Windows.Forms.AnchorStyles)
+        Me.lblScheduledHeader.BackColor = System.Drawing.Color.Transparent
+        Me.lblScheduledHeader.Cursor = System.Windows.Forms.Cursors.IBeam
+        Me.lblScheduledHeader.Font = New System.Drawing.Font("Microsoft Sans Serif", 9.0!, System.Drawing.FontStyle.Bold)
+        Me.lblScheduledHeader.ForeColor = System.Drawing.Color.Black
+        Me.lblScheduledHeader.Location = New System.Drawing.Point(3, 1)
+        Me.lblScheduledHeader.Margin = New System.Windows.Forms.Padding(2, 0, 2, 0)
+        Me.lblScheduledHeader.Name = "lblScheduled"
+        Me.lblScheduledHeader.Size = New System.Drawing.Size(196, 90)
+        Me.lblScheduledHeader.TabIndex = 8
+        Me.lblScheduledHeader.Text = "FOR PM"
+        Me.lblScheduledHeader.TextAlign = System.Drawing.ContentAlignment.MiddleCenter
+        '
+        'Main
+        '
+        Me.AutoScaleDimensions = New System.Drawing.SizeF(96.0!, 96.0!)
+        Me.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Dpi
+        Me.BackColor = System.Drawing.Color.White
+        Me.ClientSize = New System.Drawing.Size(1384, 699)
+        Me.Controls.Add(Me.tlpCalendar)
+        Me.Controls.Add(Me.pnlTop)
+        Me.DoubleBuffered = True
+        Me.Font = New System.Drawing.Font("Segoe UI", 9.0!, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, CType(0, Byte))
+        Me.FormBorderStyle = System.Windows.Forms.FormBorderStyle.FixedDialog
+        Me.Icon = CType(resources.GetObject("$this.Icon"), System.Drawing.Icon)
+        Me.Name = "Main"
+        Me.StartPosition = System.Windows.Forms.FormStartPosition.CenterScreen
+        Me.Text = " PM Calendar"
+        Me.WindowState = System.Windows.Forms.FormWindowState.Maximized
+        Me.pnlTop.ResumeLayout(False)
+        Me.pnlTop.PerformLayout()
+        Me.tlpCalendar.ResumeLayout(False)
+        Me.ResumeLayout(False)
+
+    End Sub
+
+    Friend WithEvents pnlTop As Panel
+    Private WithEvents lblYearMonth As Label
+    Friend WithEvents tmrMain As Timer
+    Private WithEvents lblSunday As Label
+    Private WithEvents lblWednesday As Label
+    Private WithEvents lblMonday As Label
+    Private WithEvents lblTuesday As Label
+    Private WithEvents lblThursday As Label
+    Private WithEvents lblFriday As Label
+    Private WithEvents lblSaturday As Label
+    Private WithEvents lblScheduledHeader As Label
+    Friend WithEvents btnGo As PinkieControls.ButtonXP
+    Friend WithEvents lblYear As Label
+    Friend WithEvents txtYear As MaskedTextBox
+    Friend WithEvents lblMonth As Label
+    Friend WithEvents cmbMonth As SergeUtils.EasyCompletionComboBox
+    Friend WithEvents btnCurrent As PinkieControls.ButtonXP
+    Friend WithEvents tlpCalendar As ExtTableLayoutPanel
+    Friend WithEvents lblView As Label
+    Friend WithEvents cmbView As ComboBox
+    Friend WithEvents txtTotal As Label
+    Friend WithEvents lblCompletion As Label
+    Friend WithEvents txtCompleted As Label
+    Friend WithEvents lblOver As Label
+    Friend WithEvents txtPercentage As Label
+    Friend WithEvents llbEquals As Label
+    Friend WithEvents btnRefresh As PinkieControls.ButtonXP
+End Class
