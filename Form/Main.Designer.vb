@@ -25,13 +25,12 @@ Partial Class Main
         Me.components = New System.ComponentModel.Container()
         Dim resources As System.ComponentModel.ComponentResourceManager = New System.ComponentModel.ComponentResourceManager(GetType(Main))
         Me.pnlTop = New System.Windows.Forms.Panel()
+        Me.txtFraction = New System.Windows.Forms.Label()
+        Me.lblEquals = New System.Windows.Forms.Label()
+        Me.lblCompletion = New System.Windows.Forms.Label()
         Me.lblView = New System.Windows.Forms.Label()
         Me.cmbView = New System.Windows.Forms.ComboBox()
         Me.btnRefresh = New PinkieControls.ButtonXP()
-        Me.llbEquals = New System.Windows.Forms.Label()
-        Me.txtPercentage = New System.Windows.Forms.Label()
-        Me.txtTotal = New System.Windows.Forms.Label()
-        Me.lblCompletion = New System.Windows.Forms.Label()
         Me.lblMonth = New System.Windows.Forms.Label()
         Me.cmbMonth = New SergeUtils.EasyCompletionComboBox()
         Me.btnCurrent = New PinkieControls.ButtonXP()
@@ -39,9 +38,10 @@ Partial Class Main
         Me.lblYear = New System.Windows.Forms.Label()
         Me.txtYear = New System.Windows.Forms.MaskedTextBox()
         Me.lblYearMonth = New System.Windows.Forms.Label()
-        Me.txtCompleted = New System.Windows.Forms.Label()
-        Me.lblOver = New System.Windows.Forms.Label()
+        Me.txtPercentage = New System.Windows.Forms.Label()
+        Me.lblVersion = New System.Windows.Forms.Label()
         Me.tmrMain = New System.Windows.Forms.Timer(Me.components)
+        Me.cmsMain = New System.Windows.Forms.ContextMenuStrip(Me.components)
         Me.tlpCalendar = New PMSchedule.ExtTableLayoutPanel()
         Me.lblSunday = New System.Windows.Forms.Label()
         Me.lblWednesday = New System.Windows.Forms.Label()
@@ -57,13 +57,12 @@ Partial Class Main
         '
         'pnlTop
         '
+        Me.pnlTop.Controls.Add(Me.txtFraction)
+        Me.pnlTop.Controls.Add(Me.lblEquals)
+        Me.pnlTop.Controls.Add(Me.lblCompletion)
         Me.pnlTop.Controls.Add(Me.lblView)
         Me.pnlTop.Controls.Add(Me.cmbView)
         Me.pnlTop.Controls.Add(Me.btnRefresh)
-        Me.pnlTop.Controls.Add(Me.llbEquals)
-        Me.pnlTop.Controls.Add(Me.txtPercentage)
-        Me.pnlTop.Controls.Add(Me.txtTotal)
-        Me.pnlTop.Controls.Add(Me.lblCompletion)
         Me.pnlTop.Controls.Add(Me.lblMonth)
         Me.pnlTop.Controls.Add(Me.cmbMonth)
         Me.pnlTop.Controls.Add(Me.btnCurrent)
@@ -71,13 +70,46 @@ Partial Class Main
         Me.pnlTop.Controls.Add(Me.lblYear)
         Me.pnlTop.Controls.Add(Me.txtYear)
         Me.pnlTop.Controls.Add(Me.lblYearMonth)
-        Me.pnlTop.Controls.Add(Me.txtCompleted)
-        Me.pnlTop.Controls.Add(Me.lblOver)
+        Me.pnlTop.Controls.Add(Me.txtPercentage)
+        Me.pnlTop.Controls.Add(Me.lblVersion)
         Me.pnlTop.Dock = System.Windows.Forms.DockStyle.Top
         Me.pnlTop.Location = New System.Drawing.Point(0, 0)
         Me.pnlTop.Name = "pnlTop"
         Me.pnlTop.Size = New System.Drawing.Size(1384, 60)
         Me.pnlTop.TabIndex = 0
+        '
+        'txtFraction
+        '
+        Me.txtFraction.Anchor = CType((System.Windows.Forms.AnchorStyles.Top Or System.Windows.Forms.AnchorStyles.Bottom), System.Windows.Forms.AnchorStyles)
+        Me.txtFraction.BackColor = System.Drawing.Color.Transparent
+        Me.txtFraction.Font = New System.Drawing.Font("Segoe UI", 16.0!, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, CType(0, Byte))
+        Me.txtFraction.Location = New System.Drawing.Point(403, 14)
+        Me.txtFraction.Margin = New System.Windows.Forms.Padding(0)
+        Me.txtFraction.Name = "txtFraction"
+        Me.txtFraction.Size = New System.Drawing.Size(106, 30)
+        Me.txtFraction.TabIndex = 246
+        Me.txtFraction.Text = "100 / 100"
+        Me.txtFraction.TextAlign = System.Drawing.ContentAlignment.MiddleCenter
+        '
+        'lblEquals
+        '
+        Me.lblEquals.Anchor = CType((System.Windows.Forms.AnchorStyles.Top Or System.Windows.Forms.AnchorStyles.Bottom), System.Windows.Forms.AnchorStyles)
+        Me.lblEquals.Font = New System.Drawing.Font("Segoe UI", 11.0!, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, CType(0, Byte))
+        Me.lblEquals.Location = New System.Drawing.Point(514, 20)
+        Me.lblEquals.Name = "lblEquals"
+        Me.lblEquals.Size = New System.Drawing.Size(19, 20)
+        Me.lblEquals.TabIndex = 245
+        Me.lblEquals.Text = "="
+        '
+        'lblCompletion
+        '
+        Me.lblCompletion.Anchor = CType((System.Windows.Forms.AnchorStyles.Top Or System.Windows.Forms.AnchorStyles.Bottom), System.Windows.Forms.AnchorStyles)
+        Me.lblCompletion.Font = New System.Drawing.Font("Segoe UI", 11.0!, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, CType(0, Byte))
+        Me.lblCompletion.Location = New System.Drawing.Point(276, 20)
+        Me.lblCompletion.Name = "lblCompletion"
+        Me.lblCompletion.Size = New System.Drawing.Size(124, 20)
+        Me.lblCompletion.TabIndex = 243
+        Me.lblCompletion.Text = "Completion Rate:"
         '
         'lblView
         '
@@ -119,53 +151,6 @@ Partial Class Main
         Me.btnRefresh.Scheme = PinkieControls.ButtonXP.Schemes.Blue
         Me.btnRefresh.Size = New System.Drawing.Size(42, 28)
         Me.btnRefresh.TabIndex = 233
-        '
-        'llbEquals
-        '
-        Me.llbEquals.Anchor = CType((System.Windows.Forms.AnchorStyles.Top Or System.Windows.Forms.AnchorStyles.Right), System.Windows.Forms.AnchorStyles)
-        Me.llbEquals.AutoSize = True
-        Me.llbEquals.Font = New System.Drawing.Font("Segoe UI", 11.0!, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, CType(0, Byte))
-        Me.llbEquals.Location = New System.Drawing.Point(484, 20)
-        Me.llbEquals.Name = "llbEquals"
-        Me.llbEquals.Size = New System.Drawing.Size(19, 20)
-        Me.llbEquals.TabIndex = 232
-        Me.llbEquals.Text = "="
-        '
-        'txtPercentage
-        '
-        Me.txtPercentage.Anchor = CType((System.Windows.Forms.AnchorStyles.Top Or System.Windows.Forms.AnchorStyles.Right), System.Windows.Forms.AnchorStyles)
-        Me.txtPercentage.Font = New System.Drawing.Font("Segoe UI", 35.0!, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, CType(0, Byte))
-        Me.txtPercentage.ForeColor = System.Drawing.Color.Black
-        Me.txtPercentage.Location = New System.Drawing.Point(509, -1)
-        Me.txtPercentage.Name = "txtPercentage"
-        Me.txtPercentage.Size = New System.Drawing.Size(149, 62)
-        Me.txtPercentage.TabIndex = 231
-        Me.txtPercentage.Text = "100%"
-        Me.txtPercentage.TextAlign = System.Drawing.ContentAlignment.MiddleCenter
-        '
-        'txtTotal
-        '
-        Me.txtTotal.Anchor = CType((System.Windows.Forms.AnchorStyles.Top Or System.Windows.Forms.AnchorStyles.Right), System.Windows.Forms.AnchorStyles)
-        Me.txtTotal.AutoSize = True
-        Me.txtTotal.Font = New System.Drawing.Font("Segoe UI", 15.0!, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, CType(0, Byte))
-        Me.txtTotal.Location = New System.Drawing.Point(433, 21)
-        Me.txtTotal.Margin = New System.Windows.Forms.Padding(0)
-        Me.txtTotal.Name = "txtTotal"
-        Me.txtTotal.Size = New System.Drawing.Size(45, 28)
-        Me.txtTotal.TabIndex = 228
-        Me.txtTotal.Text = "100"
-        Me.txtTotal.TextAlign = System.Drawing.ContentAlignment.MiddleLeft
-        '
-        'lblCompletion
-        '
-        Me.lblCompletion.Anchor = CType((System.Windows.Forms.AnchorStyles.Top Or System.Windows.Forms.AnchorStyles.Right), System.Windows.Forms.AnchorStyles)
-        Me.lblCompletion.AutoSize = True
-        Me.lblCompletion.Font = New System.Drawing.Font("Segoe UI", 11.0!, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, CType(0, Byte))
-        Me.lblCompletion.Location = New System.Drawing.Point(248, 20)
-        Me.lblCompletion.Name = "lblCompletion"
-        Me.lblCompletion.Size = New System.Drawing.Size(124, 20)
-        Me.lblCompletion.TabIndex = 226
-        Me.lblCompletion.Text = "Completion Rate:"
         '
         'lblMonth
         '
@@ -262,34 +247,37 @@ Partial Class Main
         Me.lblYearMonth.TabIndex = 14
         Me.lblYearMonth.Text = "Month Year"
         '
-        'txtCompleted
+        'txtPercentage
         '
-        Me.txtCompleted.Anchor = CType((System.Windows.Forms.AnchorStyles.Top Or System.Windows.Forms.AnchorStyles.Right), System.Windows.Forms.AnchorStyles)
-        Me.txtCompleted.Font = New System.Drawing.Font("Segoe UI", 15.0!, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, CType(0, Byte))
-        Me.txtCompleted.Location = New System.Drawing.Point(378, 9)
-        Me.txtCompleted.Margin = New System.Windows.Forms.Padding(0)
-        Me.txtCompleted.Name = "txtCompleted"
-        Me.txtCompleted.Size = New System.Drawing.Size(45, 28)
-        Me.txtCompleted.TabIndex = 227
-        Me.txtCompleted.Text = "100"
-        Me.txtCompleted.TextAlign = System.Drawing.ContentAlignment.MiddleRight
+        Me.txtPercentage.Anchor = CType((System.Windows.Forms.AnchorStyles.Top Or System.Windows.Forms.AnchorStyles.Bottom), System.Windows.Forms.AnchorStyles)
+        Me.txtPercentage.Font = New System.Drawing.Font("Segoe UI", 35.0!, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, CType(0, Byte))
+        Me.txtPercentage.ForeColor = System.Drawing.Color.Black
+        Me.txtPercentage.Location = New System.Drawing.Point(532, -2)
+        Me.txtPercentage.Name = "txtPercentage"
+        Me.txtPercentage.Size = New System.Drawing.Size(149, 62)
+        Me.txtPercentage.TabIndex = 244
+        Me.txtPercentage.Text = "100%"
+        Me.txtPercentage.TextAlign = System.Drawing.ContentAlignment.MiddleCenter
         '
-        'lblOver
+        'lblVersion
         '
-        Me.lblOver.Anchor = CType((System.Windows.Forms.AnchorStyles.Top Or System.Windows.Forms.AnchorStyles.Right), System.Windows.Forms.AnchorStyles)
-        Me.lblOver.AutoSize = True
-        Me.lblOver.BackColor = System.Drawing.Color.Transparent
-        Me.lblOver.Font = New System.Drawing.Font("Segoe UI", 30.0!, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, CType(0, Byte))
-        Me.lblOver.Location = New System.Drawing.Point(409, 2)
-        Me.lblOver.Margin = New System.Windows.Forms.Padding(0)
-        Me.lblOver.Name = "lblOver"
-        Me.lblOver.Size = New System.Drawing.Size(39, 54)
-        Me.lblOver.TabIndex = 229
-        Me.lblOver.Text = "/"
+        Me.lblVersion.Anchor = CType((System.Windows.Forms.AnchorStyles.Top Or System.Windows.Forms.AnchorStyles.Right), System.Windows.Forms.AnchorStyles)
+        Me.lblVersion.Font = New System.Drawing.Font("Segoe UI", 9.0!, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, CType(0, Byte))
+        Me.lblVersion.Location = New System.Drawing.Point(1084, 0)
+        Me.lblVersion.Name = "lblVersion"
+        Me.lblVersion.Size = New System.Drawing.Size(292, 15)
+        Me.lblVersion.TabIndex = 3
+        Me.lblVersion.Text = "F-MNT-002-4 Eff: 05/18/2022"
+        Me.lblVersion.TextAlign = System.Drawing.ContentAlignment.MiddleRight
         '
         'tmrMain
         '
         Me.tmrMain.Interval = 1000
+        '
+        'cmsMain
+        '
+        Me.cmsMain.Name = "contextMenuStrip"
+        Me.cmsMain.Size = New System.Drawing.Size(61, 4)
         '
         'tlpCalendar
         '
@@ -445,7 +433,7 @@ Partial Class Main
         Me.lblSaturday.Text = "SAT"
         Me.lblSaturday.TextAlign = System.Drawing.ContentAlignment.MiddleCenter
         '
-        'lblScheduled
+        'lblScheduledHeader
         '
         Me.lblScheduledHeader.Anchor = CType((((System.Windows.Forms.AnchorStyles.Top Or System.Windows.Forms.AnchorStyles.Bottom) _
             Or System.Windows.Forms.AnchorStyles.Left) _
@@ -456,7 +444,7 @@ Partial Class Main
         Me.lblScheduledHeader.ForeColor = System.Drawing.Color.Black
         Me.lblScheduledHeader.Location = New System.Drawing.Point(3, 1)
         Me.lblScheduledHeader.Margin = New System.Windows.Forms.Padding(2, 0, 2, 0)
-        Me.lblScheduledHeader.Name = "lblScheduled"
+        Me.lblScheduledHeader.Name = "lblScheduledHeader"
         Me.lblScheduledHeader.Size = New System.Drawing.Size(196, 90)
         Me.lblScheduledHeader.TabIndex = 8
         Me.lblScheduledHeader.Text = "FOR PM"
@@ -474,6 +462,7 @@ Partial Class Main
         Me.Font = New System.Drawing.Font("Segoe UI", 9.0!, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, CType(0, Byte))
         Me.FormBorderStyle = System.Windows.Forms.FormBorderStyle.FixedDialog
         Me.Icon = CType(resources.GetObject("$this.Icon"), System.Drawing.Icon)
+        Me.KeyPreview = True
         Me.Name = "Main"
         Me.StartPosition = System.Windows.Forms.FormStartPosition.CenterScreen
         Me.Text = " PM Calendar"
@@ -505,11 +494,11 @@ Partial Class Main
     Friend WithEvents tlpCalendar As ExtTableLayoutPanel
     Friend WithEvents lblView As Label
     Friend WithEvents cmbView As ComboBox
-    Friend WithEvents txtTotal As Label
-    Friend WithEvents lblCompletion As Label
-    Friend WithEvents txtCompleted As Label
-    Friend WithEvents lblOver As Label
-    Friend WithEvents txtPercentage As Label
-    Friend WithEvents llbEquals As Label
     Friend WithEvents btnRefresh As PinkieControls.ButtonXP
+    Friend WithEvents cmsMain As ContextMenuStrip
+    Friend WithEvents txtFraction As Label
+    Friend WithEvents lblEquals As Label
+    Friend WithEvents txtPercentage As Label
+    Friend WithEvents lblCompletion As Label
+    Friend WithEvents lblVersion As Label
 End Class

@@ -6,14 +6,15 @@
     <Platform Condition=" '$(Platform)' == '' ">AnyCPU</Platform>
     <ProjectGuid>{D82B595A-59ED-43CB-86B3-7B63CEAC6703}</ProjectGuid>
     <OutputType>WinExe</OutputType>
-    <StartupObject>PMSchedule.My.MyApplication</StartupObject>
+    <StartupObject>Sub Main</StartupObject>
     <RootNamespace>PMSchedule</RootNamespace>
     <AssemblyName>PMSchedule</AssemblyName>
     <FileAlignment>512</FileAlignment>
-    <MyType>WindowsForms</MyType>
+    <MyType>WindowsFormsWithCustomSubMain</MyType>
     <TargetFrameworkVersion>v4.5</TargetFrameworkVersion>
     <Deterministic>true</Deterministic>
     <IsWebBootstrapper>false</IsWebBootstrapper>
+    <TargetFrameworkProfile />
     <PublishUrl>\\192.168.20.11\engineering\IT System\PM Calendar\</PublishUrl>
     <Install>true</Install>
     <InstallFrom>Unc</InstallFrom>
@@ -26,7 +27,8 @@
     <MapFileExtensions>true</MapFileExtensions>
     <ProductName>PM Calendar</ProductName>
     <MinimumRequiredVersion>1.0.0.0</MinimumRequiredVersion>
-    <ApplicationRevision>14</ApplicationRevision>
+    <OpenBrowserOnPublish>false</OpenBrowserOnPublish>
+    <ApplicationRevision>18</ApplicationRevision>
     <ApplicationVersion>1.0.0.%2a</ApplicationVersion>
     <UseApplicationTrust>true</UseApplicationTrust>
     <CreateDesktopShortcut>true</CreateDesktopShortcut>
@@ -100,6 +102,7 @@
     <Reference Include="System.Data" />
     <Reference Include="System.Deployment" />
     <Reference Include="System.Drawing" />
+    <Reference Include="System.Numerics" />
     <Reference Include="System.Windows.Forms" />
     <Reference Include="System.Xml" />
     <Reference Include="System.Core" />
@@ -126,13 +129,21 @@
     <Compile Include="Class\ExtTableLayoutPanel.vb">
       <SubType>Component</SubType>
     </Compile>
+    <Compile Include="Class\FormAnimator.vb" />
     <Compile Include="Class\IDataControl.vb" />
+    <Compile Include="Class\NativeMethods.vb" />
     <Compile Include="Class\Program.vb" />
     <Compile Include="Form\Main.vb">
       <SubType>Form</SubType>
     </Compile>
     <Compile Include="Form\Main.Designer.vb">
       <DependentUpon>Main.vb</DependentUpon>
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="Form\Notification.Designer.vb">
+      <DependentUpon>Notification.vb</DependentUpon>
+    </Compile>
+    <Compile Include="Form\Notification.vb">
       <SubType>Form</SubType>
     </Compile>
     <Compile Include="My Project\AssemblyInfo.vb" />
@@ -155,6 +166,9 @@
   <ItemGroup>
     <EmbeddedResource Include="Form\Main.resx">
       <DependentUpon>Main.vb</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Form\Notification.resx">
+      <DependentUpon>Notification.vb</DependentUpon>
     </EmbeddedResource>
     <EmbeddedResource Include="My Project\Resources.resx">
       <Generator>VbMyResourcesResXFileCodeGenerator</Generator>
@@ -192,6 +206,17 @@
   </ItemGroup>
   <ItemGroup>
     <Content Include="calendar.ico" />
+    <Content Include="Sounds\cityscape.wav" />
+    <Content Include="Sounds\festival.wav">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Content>
+    <Content Include="Sounds\garden.wav" />
+    <Content Include="Sounds\heritage.wav" />
+    <Content Include="Sounds\landscape.wav" />
+    <Content Include="Sounds\normal.wav" />
+    <Content Include="Sounds\savanna.wav" />
+    <Content Include="Sounds\sonata.wav" />
+    <None Include="Resources\Calendar.png" />
     <None Include="Resources\Sync.png" />
     <None Include="Resources\Refresh.png" />
     <None Include="Resources\Blue tag.png" />
@@ -203,5 +228,6 @@
       <Name>MachineMonitoringSystem</Name>
     </ProjectReference>
   </ItemGroup>
+  <ItemGroup />
   <Import Project="$(MSBuildToolsPath)\Microsoft.VisualBasic.targets" />
 </Project>

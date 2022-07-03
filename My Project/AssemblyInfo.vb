@@ -7,14 +7,14 @@ Imports System.Runtime.InteropServices
 
 ' Review the values of the assembly attributes
 
-<Assembly: AssemblyTitle("PMSchedule")>
-<Assembly: AssemblyDescription("")>
-<Assembly: AssemblyCompany("")>
-<Assembly: AssemblyProduct("PMSchedule")>
+<Assembly: AssemblyTitle("PM Calendar")>
+<Assembly: AssemblyDescription("Machine & Jig PM Scheduling System")>
+<Assembly: AssemblyCompany("NBC (Philippines) Car Technology Corporation")>
+<Assembly: AssemblyProduct("Preventive Maintenance Calendar")>
 <Assembly: AssemblyCopyright("Copyright ©  2022")>
 <Assembly: AssemblyTrademark("")>
 
-<Assembly: ComVisible(False)>
+<Assembly: ComVisible(True)>
 
 'The following GUID is for the ID of the typelib if this project is exposed to COM
 <Assembly: Guid("ddd6adf1-7206-4af5-bbd3-15f4df50e6a6")>

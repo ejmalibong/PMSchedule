@@ -72,6 +72,7 @@
           publicKeyToken="6595b64144ccf1df"
           language="*"
         />
+		<bindingRedirect oldVersion="0.0.0.0-4.0.0.0" newVersion="6.0.0.0" />
     </dependentAssembly>
   </dependency>
   -->

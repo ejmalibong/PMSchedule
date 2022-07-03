@@ -54,20 +54,9 @@ Namespace My
             End Get
         End Property
         
-        <Global.System.Configuration.ApplicationScopedSettingAttribute(),  _
-         Global.System.Diagnostics.DebuggerNonUserCodeAttribute(),  _
-         Global.System.Configuration.SpecialSettingAttribute(Global.System.Configuration.SpecialSetting.ConnectionString),  _
-         Global.System.Configuration.DefaultSettingValueAttribute("Data Source=NBCP-LT-043\SQLEXPRESS;Initial Catalog=MachineMonitoring;Persist Secu"& _ 
-            "rity Info=True;User ID=sa;Password=Nbc12#")>  _
-        Public ReadOnly Property MachineMonitoringConnectionString() As String
-            Get
-                Return CType(Me("MachineMonitoringConnectionString"),String)
-            End Get
-        End Property
-        
         <Global.System.Configuration.UserScopedSettingAttribute(),  _
          Global.System.Diagnostics.DebuggerNonUserCodeAttribute(),  _
-         Global.System.Configuration.DefaultSettingValueAttribute("True")>  _
+         Global.System.Configuration.DefaultSettingValueAttribute("False")>  _
         Public Property IsDebug() As Boolean
             Get
                 Return CType(Me("IsDebug"),Boolean)
