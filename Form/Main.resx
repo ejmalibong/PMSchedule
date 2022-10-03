@@ -120,6 +120,26 @@
   <metadata name="pnlTop.Locked" type="System.Boolean, mscorlib, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089">
     <value>True</value>
   </metadata>
+  <metadata name="btnChecksheet.Locked" type="System.Boolean, mscorlib, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089">
+    <value>True</value>
+  </metadata>
+  <assembly alias="System.Drawing" name="System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a" />
+  <data name="btnChecksheet.Image" type="System.Drawing.Bitmap, System.Drawing" mimetype="application/x-microsoft.net.object.bytearray.base64">
+    <value>
+        iVBORw0KGgoAAAANSUhEUgAAABAAAAAQCAYAAAAf8/9hAAAAAXNSR0IArs4c6QAAAARnQU1BAACxjwv8
+        YQUAAAJSSURBVDhPjZHdS1NhHMfPdX9HEN0G0XUUddFNF9aFRJG41vJglBSUrKJw07bMYdIyw41A8KVa
+        Dl1u6tFkM9NaWbIJmdhWzuly29nO+/bt2bMJxVnRF76cF57n83zO7zA7cbycKboCC9Jj3xzfNRziO4eD
+        vGVwmjf3cfxZxwD2sZ2oLK0e98Q8diKKMr6upzEbWYUnGEXLwDRKkKM33H+HdPtmK9sJoACoBQ2pzDZW
+        Nn6iP/gZbUPjGJmLYH/To+qQ7tEwZH4VipVBJjkFo/0taq8N41TzKA6cdqJnbIHCXf4wjphd2Hv+/q7K
+        1nK6Rt7QBb9HggZJkbG4Ekd/6BN4UcBSPIGmJz7sNtj/NOnwLkDl16gBn5jEJccHXLATk7sc6i0BHGb7
+        sKfGiZPXB9HumdEDLH3j9NQiqUbvSik9EZOigpwk4PtmCl9iSfjeRfUAs3uMTC9GDVJJDhcdH8HaODTa
+        X5NOod4aQM2V57j3NITl+JYe0PDAQ0/bFopICypysgxN0YhD2aIUXpDIHGT8SGX1AKOTGOSj1CDxzY+G
+        9vcwtU6i0TYD1hHEZdK6Oxy6PUvkAEEPMFQMMsQgS5qTVUiqBKWgQlFVOg5VK9vEtjJ6gMkZAHLL1GCD
+        GLAdYZjaOLDk+1nbFJ3FmdsT6PVGkOLzekCd4wWllwwyQgF5WYGslitqKrKqSN5JdCLxzSoGJ6xD5P+t
+        U4OteAAm+zyMZPLGVj8Mllc41+JDbbMXPc8WkRarGBy/6aIGgFy5/js6wLFbvTh49eF/9VCTk5ZhGOYX
+        F2F7xEUtO2AAAAAASUVORK5CYII=
+</value>
+  </data>
   <metadata name="txtFraction.Locked" type="System.Boolean, mscorlib, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089">
     <value>True</value>
   </metadata>
@@ -138,7 +158,6 @@
   <metadata name="btnRefresh.Locked" type="System.Boolean, mscorlib, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089">
     <value>True</value>
   </metadata>
-  <assembly alias="System.Drawing" name="System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a" />
   <data name="btnRefresh.Image" type="System.Drawing.Bitmap, System.Drawing" mimetype="application/x-microsoft.net.object.bytearray.base64">
     <value>
         iVBORw0KGgoAAAANSUhEUgAAABAAAAAQCAYAAAAf8/9hAAAABGdBTUEAALGPC/xhBQAAA21JREFUOE+t

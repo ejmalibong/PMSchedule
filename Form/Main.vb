@@ -3,6 +3,7 @@ Imports System.Deployment.Application
 Imports System.Globalization
 Imports System.IO
 Imports BlackCoffeeLibrary
+Imports System.Linq
 
 Public Class Main
     Private dbConnection As New Connection
@@ -33,7 +34,11 @@ Public Class Main
 
         ' Add any initialization after the InitializeComponent() call.
         dicType.Add(" Machine", 1)
-        dicType.Add(" Jig", 2)
+        dicType.Add(" Taping", 2)
+        dicType.Add(" QCF", 3)
+        dicType.Add(" Steering", 4)
+        dicType.Add(" Applicator", 5)
+        dicType.Add(" CSW/MR", 6)
         cmbView.DisplayMember = "Key"
         cmbView.ValueMember = "Value"
         cmbView.DataSource = New BindingSource(dicType, Nothing)
@@ -224,56 +229,131 @@ Public Class Main
     End Sub
 
     Public Sub ChangeCalendar()
-        For count = 0 To lstCalendar.Length - 1
-            lblCalendar(count).Text = String.Empty
-            lstCalendar(count).Items.Clear()
-        Next
+        Try
+            For count = 0 To lstCalendar.Length - 1
+                lblCalendar(count).Text = String.Empty
+                lstCalendar(count).Items.Clear()
+            Next
 
-        For count = 0 To lstScheduled.Length - 1
-            lblScheduled(count).Text = String.Empty
-            lstScheduled(count).Items.Clear()
-        Next
+            For count = 0 To lstScheduled.Length - 1
+                lblScheduled(count).Text = String.Empty
+                lstScheduled(count).Items.Clear()
+            Next
 
-        SettingCalendar()
+            SettingCalendar()
 
-        If cmbView.SelectedValue = 1 Then
-            Dim prmTotal(1) As SqlParameter
-            prmTotal(0) = New SqlParameter("@MonthId", SqlDbType.Int)
-            prmTotal(0).Value = CInt(selectedDate(1))
-            prmTotal(1) = New SqlParameter("@YearId", SqlDbType.Int)
-            prmTotal(1).Value = selectedDate(0)
-            totalItem = dbMethod.ExecuteScalar("SELECT COUNT(ScheduleId) FROM dbo.MntMachineSchedule WHERE MonthId = @MonthId AND YearId = @YearId", CommandType.Text, prmTotal)
+            If cmbView.SelectedValue = 1 Then 'machine
+                Dim prmTotal(1) As SqlParameter
+                prmTotal(0) = New SqlParameter("@MonthId", SqlDbType.Int)
+                prmTotal(0).Value = CInt(selectedDate(1))
+                prmTotal(1) = New SqlParameter("@YearId", SqlDbType.Int)
+                prmTotal(1).Value = selectedDate(0)
+                totalItem = dbMethod.ExecuteScalar("SELECT COUNT(ScheduleId) FROM dbo.MntMachineSchedule WHERE MonthId = @MonthId AND YearId = @YearId", CommandType.Text, prmTotal)
 
-            Dim prmDone(1) As SqlParameter
-            prmDone(0) = New SqlParameter("@MonthId", SqlDbType.Int)
-            prmDone(0).Value = CInt(selectedDate(1))
-            prmDone(1) = New SqlParameter("@YearId", SqlDbType.Int)
-            prmDone(1).Value = selectedDate(0)
-            totalCurrent = dbMethod.ExecuteScalar("SELECT COUNT(ScheduleId) FROM dbo.MntMachineSchedule WHERE MonthId = @MonthId AND YearId = @YearId AND TrxId IS NOT NULL", CommandType.Text, prmDone)
-        Else
-            Dim prmTotal(1) As SqlParameter
-            prmTotal(0) = New SqlParameter("@MonthId", SqlDbType.Int)
-            prmTotal(0).Value = CInt(selectedDate(1))
-            prmTotal(1) = New SqlParameter("@YearId", SqlDbType.Int)
-            prmTotal(1).Value = selectedDate(0)
-            totalItem = dbMethod.ExecuteScalar("SELECT COUNT(ScheduleId) FROM dbo.MntJigSchedule WHERE MonthId = @MonthId AND YearId = @YearId", CommandType.Text, prmTotal)
+                Dim prmDone(1) As SqlParameter
+                prmDone(0) = New SqlParameter("@MonthId", SqlDbType.Int)
+                prmDone(0).Value = CInt(selectedDate(1))
+                prmDone(1) = New SqlParameter("@YearId", SqlDbType.Int)
+                prmDone(1).Value = selectedDate(0)
+                totalCurrent = dbMethod.ExecuteScalar("SELECT COUNT(ScheduleId) FROM dbo.MntMachineSchedule WHERE MonthId = @MonthId AND YearId = @YearId AND TrxId IS NOT NULL", CommandType.Text, prmDone)
 
-            Dim prmDone(1) As SqlParameter
-            prmDone(0) = New SqlParameter("@MonthId", SqlDbType.Int)
-            prmDone(0).Value = CInt(selectedDate(1))
-            prmDone(1) = New SqlParameter("@YearId", SqlDbType.Int)
-            prmDone(1).Value = selectedDate(0)
-            totalCurrent = dbMethod.ExecuteScalar("SELECT COUNT(ScheduleId) FROM dbo.MntJigSchedule WHERE MonthId = @MonthId AND YearId = @YearId AND TrxId IS NOT NULL", CommandType.Text, prmDone)
-        End If
+            ElseIf cmbView.SelectedValue = 2 Then 'taping jig
+                Dim prmTotal(1) As SqlParameter
+                prmTotal(0) = New SqlParameter("@MonthId", SqlDbType.Int)
+                prmTotal(0).Value = CInt(selectedDate(1))
+                prmTotal(1) = New SqlParameter("@YearId", SqlDbType.Int)
+                prmTotal(1).Value = selectedDate(0)
+                totalItem = dbMethod.ExecuteScalar("SELECT COUNT(ScheduleId) FROM dbo.MntJigSchedule WHERE MonthId = @MonthId AND YearId = @YearId AND JigId IN " &
+                                                   "(SELECT JigId FROM dbo.MntJig WHERE JigTypeId = 1)", CommandType.Text, prmTotal)
 
-        If CDbl(totalCurrent) = 0 AndAlso CDbl(totalItem) = 0 Then
-            txtFraction.Text = "0 / 0"
-            txtPercentage.Text = 0 & "%"
-        Else
-            Dim percentage As Double = (CDbl(totalCurrent) / CDbl(totalItem)) * 100
-            txtFraction.Text = totalCurrent & " / " & totalItem
-            txtPercentage.Text = Math.Round(percentage, MidpointRounding.AwayFromZero) & "%"
-        End If
+                Dim prmDone(1) As SqlParameter
+                prmDone(0) = New SqlParameter("@MonthId", SqlDbType.Int)
+                prmDone(0).Value = CInt(selectedDate(1))
+                prmDone(1) = New SqlParameter("@YearId", SqlDbType.Int)
+                prmDone(1).Value = selectedDate(0)
+                totalCurrent = dbMethod.ExecuteScalar("SELECT COUNT(ScheduleId) FROM dbo.MntJigSchedule WHERE MonthId = @MonthId AND YearId = @YearId AND JigId IN " &
+                                                      "(SELECT JigId FROM dbo.MntJig WHERE JigTypeId = 1) AND TrxId IS NOT NULL", CommandType.Text, prmDone)
+
+            ElseIf cmbView.SelectedValue = 3 Then 'qcf
+                Dim prmTotal(1) As SqlParameter
+                prmTotal(0) = New SqlParameter("@MonthId", SqlDbType.Int)
+                prmTotal(0).Value = CInt(selectedDate(1))
+                prmTotal(1) = New SqlParameter("@YearId", SqlDbType.Int)
+                prmTotal(1).Value = selectedDate(0)
+                totalItem = dbMethod.ExecuteScalar("SELECT COUNT(ScheduleId) FROM dbo.MntJigSchedule WHERE MonthId = @MonthId AND YearId = @YearId AND JigId IN " &
+                                                   "(SELECT JigId FROM dbo.MntJig WHERE JigTypeId = 2)", CommandType.Text, prmTotal)
+
+                Dim prmDone(1) As SqlParameter
+                prmDone(0) = New SqlParameter("@MonthId", SqlDbType.Int)
+                prmDone(0).Value = CInt(selectedDate(1))
+                prmDone(1) = New SqlParameter("@YearId", SqlDbType.Int)
+                prmDone(1).Value = selectedDate(0)
+                totalCurrent = dbMethod.ExecuteScalar("SELECT COUNT(ScheduleId) FROM dbo.MntJigSchedule WHERE MonthId = @MonthId AND YearId = @YearId AND JigId IN " &
+                                                      "(SELECT JigId FROM dbo.MntJig WHERE JigTypeId = 2) AND TrxId IS NOT NULL", CommandType.Text, prmDone)
+
+            ElseIf cmbView.SelectedValue = 4 Then 'steering
+                Dim prmTotal(1) As SqlParameter
+                prmTotal(0) = New SqlParameter("@MonthId", SqlDbType.Int)
+                prmTotal(0).Value = CInt(selectedDate(1))
+                prmTotal(1) = New SqlParameter("@YearId", SqlDbType.Int)
+                prmTotal(1).Value = selectedDate(0)
+                totalItem = dbMethod.ExecuteScalar("SELECT COUNT(ScheduleId) FROM dbo.MntJigSchedule WHERE MonthId = @MonthId AND YearId = @YearId AND JigId IN " &
+                                                   "(SELECT JigId FROM dbo.MntJig WHERE JigTypeId = 3)", CommandType.Text, prmTotal)
+
+                Dim prmDone(1) As SqlParameter
+                prmDone(0) = New SqlParameter("@MonthId", SqlDbType.Int)
+                prmDone(0).Value = CInt(selectedDate(1))
+                prmDone(1) = New SqlParameter("@YearId", SqlDbType.Int)
+                prmDone(1).Value = selectedDate(0)
+                totalCurrent = dbMethod.ExecuteScalar("SELECT COUNT(ScheduleId) FROM dbo.MntJigSchedule WHERE MonthId = @MonthId AND YearId = @YearId AND JigId IN " &
+                                                      "(SELECT JigId FROM dbo.MntJig WHERE JigTypeId = 3) AND TrxId IS NOT NULL", CommandType.Text, prmDone)
+
+            ElseIf cmbView.SelectedValue = 5 Then 'applicator
+                Dim prmTotal(1) As SqlParameter
+                prmTotal(0) = New SqlParameter("@MonthId", SqlDbType.Int)
+                prmTotal(0).Value = CInt(selectedDate(1))
+                prmTotal(1) = New SqlParameter("@YearId", SqlDbType.Int)
+                prmTotal(1).Value = selectedDate(0)
+                totalItem = dbMethod.ExecuteScalar("SELECT COUNT(ScheduleId) FROM dbo.MntJigSchedule WHERE MonthId = @MonthId AND YearId = @YearId AND JigId IN " &
+                                                   "(SELECT JigId FROM dbo.MntJig WHERE JigTypeId = 4)", CommandType.Text, prmTotal)
+
+                Dim prmDone(1) As SqlParameter
+                prmDone(0) = New SqlParameter("@MonthId", SqlDbType.Int)
+                prmDone(0).Value = CInt(selectedDate(1))
+                prmDone(1) = New SqlParameter("@YearId", SqlDbType.Int)
+                prmDone(1).Value = selectedDate(0)
+                totalCurrent = dbMethod.ExecuteScalar("SELECT COUNT(ScheduleId) FROM dbo.MntJigSchedule WHERE MonthId = @MonthId AND YearId = @YearId AND JigId IN " &
+                                                      "(SELECT JigId FROM dbo.MntJig WHERE JigTypeId = 4) AND TrxId IS NOT NULL", CommandType.Text, prmDone)
+
+            ElseIf cmbView.SelectedValue = 6 Then 'csw/mr
+                Dim prmTotal(1) As SqlParameter
+                prmTotal(0) = New SqlParameter("@MonthId", SqlDbType.Int)
+                prmTotal(0).Value = CInt(selectedDate(1))
+                prmTotal(1) = New SqlParameter("@YearId", SqlDbType.Int)
+                prmTotal(1).Value = selectedDate(0)
+                totalItem = dbMethod.ExecuteScalar("SELECT COUNT(ScheduleId) FROM dbo.MntJigSchedule WHERE MonthId = @MonthId AND YearId = @YearId AND JigId IN " &
+                                                   "(SELECT JigId FROM dbo.MntJig WHERE JigTypeId = 5)", CommandType.Text, prmTotal)
+
+                Dim prmDone(1) As SqlParameter
+                prmDone(0) = New SqlParameter("@MonthId", SqlDbType.Int)
+                prmDone(0).Value = CInt(selectedDate(1))
+                prmDone(1) = New SqlParameter("@YearId", SqlDbType.Int)
+                prmDone(1).Value = selectedDate(0)
+                totalCurrent = dbMethod.ExecuteScalar("SELECT COUNT(ScheduleId) FROM dbo.MntJigSchedule WHERE MonthId = @MonthId AND YearId = @YearId AND JigId IN " &
+                                                      "(SELECT JigId FROM dbo.MntJig WHERE JigTypeId = 5) AND TrxId IS NOT NULL", CommandType.Text, prmDone)
+            End If
+
+            If CDbl(totalCurrent) = 0 AndAlso CDbl(totalItem) = 0 Then
+                txtFraction.Text = "0 / 0"
+                txtPercentage.Text = 0 & "%"
+            Else
+                Dim percentage As Double = (CDbl(totalCurrent) / CDbl(totalItem)) * 100
+                txtFraction.Text = totalCurrent & " / " & totalItem
+                txtPercentage.Text = Math.Round(percentage, MidpointRounding.AwayFromZero) & "%"
+            End If
+        Catch ex As Exception
+            MessageBox.Show(dbMain.SetExceptionMessage(ex), "", MessageBoxButtons.OK, MessageBoxIcon.Error)
+        End Try
     End Sub
 
     'prevent form resizing when double clicked the titlebar or dragged
@@ -300,55 +380,83 @@ Public Class Main
     End Sub
 
     Private Shared Sub PlayNotificationSound(ByVal sound As String)
-        Dim soundsFolder = Path.Combine(AppDomain.CurrentDomain.BaseDirectory, "Sounds")
-        Dim soundFile = Path.Combine(soundsFolder, sound & ".wav")
+        Dim dbMainLoc As New BlackCoffeeLibrary.Main
 
-        Using player = New Media.SoundPlayer(soundFile)
-            player.Play()
-        End Using
+        Try
+            Dim soundsFolder = Path.Combine(AppDomain.CurrentDomain.BaseDirectory, "Sounds")
+            Dim soundFile = Path.Combine(soundsFolder, sound & ".wav")
+
+            Using player = New Media.SoundPlayer(soundFile)
+                player.Play()
+            End Using
+        Catch ex As Exception
+            MessageBox.Show(dbMainLoc.SetExceptionMessage(ex), "", MessageBoxButtons.OK, MessageBoxIcon.Error)
+        End Try
     End Sub
 
     Private Sub btnCurrent_Click(sender As Object, e As EventArgs) Handles btnCurrent.Click
-        selectedDate(0) = Year(dbMethod.GetServerDate)
-        selectedDate(1) = Month(dbMethod.GetServerDate)
-        cmbMonth.SelectedValue = 0
-        txtYear.Text = Year(dbMethod.GetServerDate)
-        ChangeCalendar()
-        lblYearMonth.Text = MonthName(selectedDate(1), True) & " " & selectedDate(0)
-        Me.ActiveControl = cmbMonth
+        Try
+            selectedDate(0) = Year(dbMethod.GetServerDate)
+            selectedDate(1) = Month(dbMethod.GetServerDate)
+            cmbMonth.SelectedValue = 0
+            txtYear.Text = Year(dbMethod.GetServerDate)
+            ChangeCalendar()
+            lblYearMonth.Text = MonthName(selectedDate(1), True) & " " & selectedDate(0)
+            Me.ActiveControl = cmbMonth
+        Catch ex As Exception
+            MessageBox.Show(dbMain.SetExceptionMessage(ex), "", MessageBoxButtons.OK, MessageBoxIcon.Error)
+        End Try
     End Sub
 
     Private Sub btnGo_Click(sender As Object, e As EventArgs) Handles btnGo.Click
-        Me.SuspendLayout()
+        Try
+            Me.SuspendLayout()
 
-        If cmbMonth.SelectedValue = 0 Then
-            Me.ActiveControl = cmbMonth
-            Return
-        End If
+            If cmbMonth.SelectedValue = 0 Then
+                Me.ActiveControl = cmbMonth
+                Return
+            End If
 
-        Dim cval As Integer = CInt(selectedDate(2))
-        Dim temp As Integer = CInt(selectedDate(2))
+            Dim cval As Integer = CInt(selectedDate(2))
+            Dim temp As Integer = CInt(selectedDate(2))
 
-        Dim maxDays As Integer = Integer.Parse(Date.DaysInMonth(txtYear.Text, cmbMonth.SelectedValue).ToString())
-        selectedDate(2) = CInt(CDate(DateSerial(txtYear.Text, cmbMonth.SelectedValue, maxDays)).ToString("dd"))
+            Dim maxDays As Integer = Integer.Parse(Date.DaysInMonth(txtYear.Text, cmbMonth.SelectedValue).ToString())
+            selectedDate(2) = CInt(CDate(DateSerial(txtYear.Text, cmbMonth.SelectedValue, maxDays)).ToString("dd"))
 
-        If Integer.Parse(txtYear.Text.Trim) = selectedDate(0) AndAlso Integer.Parse(cmbMonth.SelectedValue) = selectedDate(1) Then
+            If Integer.Parse(txtYear.Text.Trim) = selectedDate(0) AndAlso Integer.Parse(cmbMonth.SelectedValue) = selectedDate(1) Then
 
-        Else
-            selectedDate(0) = txtYear.Text
-            selectedDate(1) = cmbMonth.SelectedValue
-            ChangeCalendar()
-        End If
+            Else
+                selectedDate(0) = txtYear.Text
+                selectedDate(1) = cmbMonth.SelectedValue
+                ChangeCalendar()
+            End If
 
-        lblYearMonth.Text = MonthName(cmbMonth.SelectedValue, True) & " " & txtYear.Text
+            lblYearMonth.Text = MonthName(cmbMonth.SelectedValue, True) & " " & txtYear.Text
 
-        Me.ResumeLayout()
+            Me.ResumeLayout()
+        Catch ex As Exception
+            MessageBox.Show(dbMain.SetExceptionMessage(ex), "", MessageBoxButtons.OK, MessageBoxIcon.Error)
+        End Try
     End Sub
 
     Private Sub btnRefresh_Click(sender As Object, e As EventArgs) Handles btnRefresh.Click
         Me.SuspendLayout()
         Me.ChangeCalendar()
         Me.ResumeLayout()
+    End Sub
+
+    Private Sub btnChecksheet_Click(sender As Object, e As EventArgs) Handles btnChecksheet.Click
+        Try
+            If cmbView.SelectedValue = 1 Then
+                Dim frmDetail As New MachineMonitoringSystem.MntMchCs()
+                frmDetail.ShowDialog(Me)
+            Else
+                Dim frmDetail As New MachineMonitoringSystem.MntJigCs()
+                frmDetail.ShowDialog(Me)
+            End If
+        Catch ex As Exception
+            MessageBox.Show(dbMain.SetExceptionMessage(ex), "", MessageBoxButtons.OK, MessageBoxIcon.Error)
+        End Try
     End Sub
 
     'listview double click event
@@ -389,6 +497,12 @@ Public Class Main
 
         AddHandler cmbView.SelectedValueChanged, AddressOf cmbView_SelectedValueChanged
 
+        Dim prmIms(0) As SqlParameter
+        prmIms(0) = New SqlParameter("SettingsId", SqlDbType.Int)
+        prmIms(0).Value = 1
+
+        lblVersion.Text = dbMethod.ExecuteScalar("SELECT TRIM(IMS) AS IMS FROM dbo.SysSetting WHERE SettingsId = @SettingsId", CommandType.Text, prmIms)
+
         tmrMain.Start()
         Me.ActiveControl = cmbMonth
     End Sub
@@ -422,6 +536,16 @@ Public Class Main
         Try
             If e.IsSelected Then
                 e.Item.Selected = False
+            End If
+        Catch ex As Exception
+            MessageBox.Show(dbMain.SetExceptionMessage(ex), "", MessageBoxButtons.OK, MessageBoxIcon.Error)
+        End Try
+    End Sub
+
+    Private Sub Main_KeyDown(sender As Object, e As KeyEventArgs) Handles Me.KeyDown
+        Try
+            If e.Control AndAlso e.KeyCode.Equals(Keys.F12) Then
+                ShowNotification()
             End If
         Catch ex As Exception
             MessageBox.Show(dbMain.SetExceptionMessage(ex), "", MessageBoxButtons.OK, MessageBoxIcon.Error)
@@ -473,71 +597,525 @@ Public Class Main
                         pnlCalendar(boxCount).BackColor = Drawing.SystemColors.Window
                         lstCalendar(boxCount).BackColor = Drawing.SystemColors.Window
 
-                        'plot the pending pm schedule
-                        If cmbView.SelectedValue = 1 Then
-                            Dim rowScheduled As Integer = row - 1
-                            Dim indexDate As Date = New Date(selectedDate(0).ToString, selectedDate(1).ToString, dayCount)
+                        Dim rowScheduled As Integer = row - 1
+                        Dim indexDate As Date = New Date(selectedDate(0).ToString, selectedDate(1).ToString, dayCount)
+                        Dim validDate As Date = indexDate.AddDays(4)
+
+                        If GetWeekNumber(indexDate).Equals(GetWeekNumber(validDate)) AndAlso Month(indexDate).Equals(Month(validDate)) Then
                             lblScheduled(rowScheduled).Text = "Week " & GetWeekNumber(indexDate)
 
-                            Dim prmForPm(0) As SqlParameter
-                            prmForPm(0) = New SqlParameter("@WeekId", SqlDbType.Int)
-                            prmForPm(0).Value = GetWeekNumber(indexDate)
+                            'plot the pending pm schedule
+                            If cmbView.SelectedValue = 1 Then 'machine
+                                Dim prmForPm(0) As SqlParameter
+                                prmForPm(0) = New SqlParameter("@WeekId", SqlDbType.Int)
+                                prmForPm(0).Value = GetWeekNumber(indexDate)
 
-                            Dim rdrForPm As IDataReader = dbMethod.ExecuteReader("RdMntMachineSchedule", CommandType.StoredProcedure, prmForPm)
+                                Dim accomplished As Integer = 0
+                                Dim totalPerWeek As Integer = 0
 
-                            While rdrForPm.Read
-                                If rdrForPm("TrxId") Is DBNull.Value AndAlso rdrForPm("ActivityBy") Is DBNull.Value AndAlso rdrForPm("ActivityDate") Is DBNull.Value Then
-                                    Dim arrStr(3) As String
-                                    arrStr(0) = rdrForPm("MachineName").ToString
-                                    arrStr(1) = rdrForPm("MachineId")
-                                    arrStr(2) = ""
+                                Dim rdrForPm As IDataReader = dbMethod.ExecuteReader("RdMntMachineSchedule", CommandType.StoredProcedure, prmForPm)
 
-                                    Dim lsvItem As ListViewItem
-                                    lsvItem = New ListViewItem(arrStr)
-                                    lstScheduled(rowScheduled).Items.Add(lsvItem)
+                                While rdrForPm.Read
+                                    totalPerWeek += 1
+
+                                    If rdrForPm("TrxId") Is DBNull.Value AndAlso rdrForPm("ActivityBy") Is DBNull.Value AndAlso rdrForPm("ActivityDate") Is DBNull.Value Then
+                                        Dim arrStr(3) As String
+                                        arrStr(0) = rdrForPm("MachineName").ToString
+                                        arrStr(1) = rdrForPm("MachineId")
+                                        arrStr(2) = ""
+
+                                        Dim lsvItem As ListViewItem
+                                        lsvItem = New ListViewItem(arrStr)
+                                        lstScheduled(rowScheduled).Items.Add(lsvItem)
+                                    End If
+                                End While
+                                rdrForPm.Close()
+
+                                lstScheduled(rowScheduled).Columns.Item(0).Width = -1
+
+                                If accomplished.Equals(totalPerWeek) AndAlso (accomplished <> 0 AndAlso totalPerWeek <> 0) Then
+                                    lblScheduled(rowScheduled).Text += "  (100%)"
+                                ElseIf accomplished = 0 AndAlso totalPerWeek = 0 Then
+                                    lblScheduled(rowScheduled).Text += "  (0%)"
+                                Else
+                                    accomplished = totalPerWeek - CDbl(lstScheduled(rowScheduled).Items.Count)
+
+                                    Dim percentage As Double = (CDbl(accomplished) / CDbl(totalPerWeek)) * 100
+                                    lblScheduled(rowScheduled).Text += "  (" & Math.Round(percentage, MidpointRounding.AwayFromZero) & "%)"
                                 End If
-                            End While
-                            rdrForPm.Close()
 
-                            lstScheduled(rowScheduled).Columns.Item(0).Width = -1
-                        Else
-                            Dim rowScheduled As Integer = row - 1
-                            Dim indexDate As Date = New Date(selectedDate(0).ToString, selectedDate(1).ToString, dayCount)
-                            lblScheduled(rowScheduled).Text = "Week " & GetWeekNumber(indexDate)
+                            ElseIf cmbView.SelectedValue = 2 Then 'taping jig
+                                Dim prmForPm(1) As SqlParameter
+                                prmForPm(0) = New SqlParameter("@WeekId", SqlDbType.Int)
+                                prmForPm(0).Value = GetWeekNumber(indexDate)
+                                prmForPm(1) = New SqlParameter("@JigTypeId", SqlDbType.Int)
+                                prmForPm(1).Value = 1
 
-                            Dim prmForPm(0) As SqlParameter
-                            prmForPm(0) = New SqlParameter("@WeekId", SqlDbType.Int)
-                            prmForPm(0).Value = GetWeekNumber(indexDate)
+                                Dim accomplished As Integer = 0
+                                Dim totalPerWeek As Integer = 0
 
-                            Dim rdrForPm As IDataReader = dbMethod.ExecuteReader("RdMntJigSchedule", CommandType.StoredProcedure, prmForPm)
+                                Dim rdrForPm As IDataReader = dbMethod.ExecuteReader("RdMntJigSchedule", CommandType.StoredProcedure, prmForPm)
 
-                            While rdrForPm.Read
-                                If rdrForPm("TrxId") Is DBNull.Value AndAlso rdrForPm("ActivityBy") Is DBNull.Value AndAlso rdrForPm("ActivityDate") Is DBNull.Value Then
-                                    Dim arrStr(3) As String
-                                    arrStr(0) = rdrForPm("JigCompleteName").ToString
-                                    arrStr(1) = rdrForPm("JigId")
-                                    arrStr(2) = ""
+                                While rdrForPm.Read
+                                    totalPerWeek += 1
 
-                                    Dim lsvItem As ListViewItem
-                                    lsvItem = New ListViewItem(arrStr)
-                                    lstScheduled(rowScheduled).Items.Add(lsvItem)
+                                    If rdrForPm("TrxId") Is DBNull.Value AndAlso rdrForPm("ActivityBy") Is DBNull.Value AndAlso rdrForPm("ActivityDate") Is DBNull.Value Then
+                                        Dim arrStr(3) As String
+                                        arrStr(0) = rdrForPm("JigCompleteName").ToString
+                                        arrStr(1) = rdrForPm("JigId")
+                                        arrStr(2) = ""
+
+                                        Dim lsvItem As ListViewItem
+                                        lsvItem = New ListViewItem(arrStr)
+                                        lstScheduled(rowScheduled).Items.Add(lsvItem)
+                                    End If
+                                End While
+                                rdrForPm.Close()
+
+                                lstScheduled(rowScheduled).Columns.Item(0).Width = -1
+
+                                If accomplished.Equals(totalPerWeek) AndAlso (accomplished <> 0 AndAlso totalPerWeek <> 0) Then
+                                    lblScheduled(rowScheduled).Text += "  (100%)"
+                                ElseIf accomplished = 0 AndAlso totalPerWeek = 0 Then
+                                    lblScheduled(rowScheduled).Text += "  (0%)"
+                                Else
+                                    accomplished = totalPerWeek - CDbl(lstScheduled(rowScheduled).Items.Count)
+
+                                    Dim percentage As Double = (CDbl(accomplished) / CDbl(totalPerWeek)) * 100
+                                    lblScheduled(rowScheduled).Text += "  (" & Math.Round(percentage, MidpointRounding.AwayFromZero) & "%)"
                                 End If
-                            End While
-                            rdrForPm.Close()
 
-                            lstScheduled(rowScheduled).Columns.Item(0).Width = -1
+                            ElseIf cmbView.SelectedValue = 3 Then 'qcf
+                                Dim prmForPm(1) As SqlParameter
+                                prmForPm(0) = New SqlParameter("@WeekId", SqlDbType.Int)
+                                prmForPm(0).Value = GetWeekNumber(indexDate)
+                                prmForPm(1) = New SqlParameter("@JigTypeId", SqlDbType.Int)
+                                prmForPm(1).Value = 2
+
+                                Dim accomplished As Integer = 0
+                                Dim totalPerWeek As Integer = 0
+
+                                Dim rdrForPm As IDataReader = dbMethod.ExecuteReader("RdMntJigSchedule", CommandType.StoredProcedure, prmForPm)
+
+                                While rdrForPm.Read
+                                    totalPerWeek += 1
+
+                                    If rdrForPm("TrxId") Is DBNull.Value AndAlso rdrForPm("ActivityBy") Is DBNull.Value AndAlso rdrForPm("ActivityDate") Is DBNull.Value Then
+                                        Dim arrStr(3) As String
+                                        arrStr(0) = rdrForPm("JigCompleteName").ToString
+                                        arrStr(1) = rdrForPm("JigId")
+                                        arrStr(2) = ""
+
+                                        Dim lsvItem As ListViewItem
+                                        lsvItem = New ListViewItem(arrStr)
+                                        lstScheduled(rowScheduled).Items.Add(lsvItem)
+                                    End If
+                                End While
+                                rdrForPm.Close()
+
+                                lstScheduled(rowScheduled).Columns.Item(0).Width = -1
+
+                                If accomplished.Equals(totalPerWeek) AndAlso (accomplished <> 0 AndAlso totalPerWeek <> 0) Then
+                                    lblScheduled(rowScheduled).Text += "  (100%)"
+                                ElseIf accomplished = 0 AndAlso totalPerWeek = 0 Then
+                                    lblScheduled(rowScheduled).Text += "  (0%)"
+                                Else
+                                    accomplished = totalPerWeek - CDbl(lstScheduled(rowScheduled).Items.Count)
+
+                                    Dim percentage As Double = (CDbl(accomplished) / CDbl(totalPerWeek)) * 100
+                                    lblScheduled(rowScheduled).Text += "  (" & Math.Round(percentage, MidpointRounding.AwayFromZero) & "%)"
+                                End If
+
+                            ElseIf cmbView.SelectedValue = 4 Then 'steering
+                                Dim prmForPm(1) As SqlParameter
+                                prmForPm(0) = New SqlParameter("@WeekId", SqlDbType.Int)
+                                prmForPm(0).Value = GetWeekNumber(indexDate)
+                                prmForPm(1) = New SqlParameter("@JigTypeId", SqlDbType.Int)
+                                prmForPm(1).Value = 3
+
+                                Dim accomplished As Integer = 0
+                                Dim totalPerWeek As Integer = 0
+
+                                Dim rdrForPm As IDataReader = dbMethod.ExecuteReader("RdMntJigSchedule", CommandType.StoredProcedure, prmForPm)
+
+                                While rdrForPm.Read
+                                    totalPerWeek += 1
+
+                                    If rdrForPm("TrxId") Is DBNull.Value AndAlso rdrForPm("ActivityBy") Is DBNull.Value AndAlso rdrForPm("ActivityDate") Is DBNull.Value Then
+                                        Dim arrStr(3) As String
+                                        arrStr(0) = rdrForPm("JigCompleteName").ToString
+                                        arrStr(1) = rdrForPm("JigId")
+                                        arrStr(2) = ""
+
+                                        Dim lsvItem As ListViewItem
+                                        lsvItem = New ListViewItem(arrStr)
+                                        lstScheduled(rowScheduled).Items.Add(lsvItem)
+                                    End If
+                                End While
+                                rdrForPm.Close()
+
+                                lstScheduled(rowScheduled).Columns.Item(0).Width = -1
+
+                                If accomplished.Equals(totalPerWeek) AndAlso (accomplished <> 0 AndAlso totalPerWeek <> 0) Then
+                                    lblScheduled(rowScheduled).Text += "  (100%)"
+                                ElseIf accomplished = 0 AndAlso totalPerWeek = 0 Then
+                                    lblScheduled(rowScheduled).Text += "  (0%)"
+                                Else
+                                    accomplished = totalPerWeek - CDbl(lstScheduled(rowScheduled).Items.Count)
+
+                                    Dim percentage As Double = (CDbl(accomplished) / CDbl(totalPerWeek)) * 100
+                                    lblScheduled(rowScheduled).Text += "  (" & Math.Round(percentage, MidpointRounding.AwayFromZero) & "%)"
+                                End If
+
+                            ElseIf cmbView.SelectedValue = 5 Then 'applicator
+                                Dim prmForPm(1) As SqlParameter
+                                prmForPm(0) = New SqlParameter("@WeekId", SqlDbType.Int)
+                                prmForPm(0).Value = GetWeekNumber(indexDate)
+                                prmForPm(1) = New SqlParameter("@JigTypeId", SqlDbType.Int)
+                                prmForPm(1).Value = 4
+
+                                Dim accomplished As Integer = 0
+                                Dim totalPerWeek As Integer = 0
+
+                                Dim rdrForPm As IDataReader = dbMethod.ExecuteReader("RdMntJigSchedule", CommandType.StoredProcedure, prmForPm)
+
+                                While rdrForPm.Read
+                                    totalPerWeek += 1
+
+                                    If rdrForPm("TrxId") Is DBNull.Value AndAlso rdrForPm("ActivityBy") Is DBNull.Value AndAlso rdrForPm("ActivityDate") Is DBNull.Value Then
+                                        Dim arrStr(3) As String
+                                        arrStr(0) = rdrForPm("JigCompleteName").ToString
+                                        arrStr(1) = rdrForPm("JigId")
+                                        arrStr(2) = ""
+
+                                        Dim lsvItem As ListViewItem
+                                        lsvItem = New ListViewItem(arrStr)
+                                        lstScheduled(rowScheduled).Items.Add(lsvItem)
+                                    End If
+                                End While
+                                rdrForPm.Close()
+
+                                lstScheduled(rowScheduled).Columns.Item(0).Width = -1
+
+                                If accomplished.Equals(totalPerWeek) AndAlso (accomplished <> 0 AndAlso totalPerWeek <> 0) Then
+                                    lblScheduled(rowScheduled).Text += "  (100%)"
+                                ElseIf accomplished = 0 AndAlso totalPerWeek = 0 Then
+                                    lblScheduled(rowScheduled).Text += "  (0%)"
+                                Else
+                                    accomplished = totalPerWeek - CDbl(lstScheduled(rowScheduled).Items.Count)
+
+                                    Dim percentage As Double = (CDbl(accomplished) / CDbl(totalPerWeek)) * 100
+                                    lblScheduled(rowScheduled).Text += "  (" & Math.Round(percentage, MidpointRounding.AwayFromZero) & "%)"
+                                End If
+
+                            ElseIf cmbView.SelectedValue = 6 Then 'csw/mr
+                                Dim prmForPm(1) As SqlParameter
+                                prmForPm(0) = New SqlParameter("@WeekId", SqlDbType.Int)
+                                prmForPm(0).Value = GetWeekNumber(indexDate)
+                                prmForPm(1) = New SqlParameter("@JigTypeId", SqlDbType.Int)
+                                prmForPm(1).Value = 5
+
+                                Dim accomplished As Integer = 0
+                                Dim totalPerWeek As Integer = 0
+
+                                Dim rdrForPm As IDataReader = dbMethod.ExecuteReader("RdMntJigSchedule", CommandType.StoredProcedure, prmForPm)
+
+                                While rdrForPm.Read
+                                    totalPerWeek += 1
+
+                                    If rdrForPm("TrxId") Is DBNull.Value AndAlso rdrForPm("ActivityBy") Is DBNull.Value AndAlso rdrForPm("ActivityDate") Is DBNull.Value Then
+                                        Dim arrStr(3) As String
+                                        arrStr(0) = rdrForPm("JigCompleteName").ToString
+                                        arrStr(1) = rdrForPm("JigId")
+                                        arrStr(2) = ""
+
+                                        Dim lsvItem As ListViewItem
+                                        lsvItem = New ListViewItem(arrStr)
+                                        lstScheduled(rowScheduled).Items.Add(lsvItem)
+                                    End If
+                                End While
+                                rdrForPm.Close()
+
+                                lstScheduled(rowScheduled).Columns.Item(0).Width = -1
+
+                                If accomplished.Equals(totalPerWeek) AndAlso (accomplished <> 0 AndAlso totalPerWeek <> 0) Then
+                                    lblScheduled(rowScheduled).Text += "  (100%)"
+                                ElseIf accomplished = 0 AndAlso totalPerWeek = 0 Then
+                                    lblScheduled(rowScheduled).Text += "  (0%)"
+                                Else
+                                    accomplished = totalPerWeek - CDbl(lstScheduled(rowScheduled).Items.Count)
+
+                                    Dim percentage As Double = (CDbl(accomplished) / CDbl(totalPerWeek)) * 100
+                                    lblScheduled(rowScheduled).Text += "  (" & Math.Round(percentage, MidpointRounding.AwayFromZero) & "%)"
+                                End If
+                            End If
                         End If
 
                     ElseIf Equals(firstDayOfMonth.DayOfWeek.ToString(), "Saturday") Then
                         pnlCalendar(boxCount).BackColor = Drawing.SystemColors.Window
                         lstCalendar(boxCount).BackColor = Drawing.SystemColors.Window
+
+                        Dim rowScheduled As Integer = row - 2
+                        Dim indexDate As Date = New Date(selectedDate(0).ToString, selectedDate(1).ToString, dayCount)
+                        Dim validDate As Date = indexDate.AddDays(-4)
+
+                        If GetWeekNumber(indexDate).Equals(GetWeekNumber(validDate)) AndAlso Month(indexDate).Equals(Month(validDate)) AndAlso Not Month(indexDate).Equals(Month(indexDate.AddDays(-7))) Then
+                            lblScheduled(rowScheduled).Text = "Week " & GetWeekNumber(indexDate)
+
+                            'plot the pending pm schedule
+                            If cmbView.SelectedValue = 1 Then 'machine
+                                Dim prmForPm(0) As SqlParameter
+                                prmForPm(0) = New SqlParameter("@WeekId", SqlDbType.Int)
+                                prmForPm(0).Value = GetWeekNumber(indexDate)
+
+                                Dim accomplished As Integer = 0
+                                Dim totalPerWeek As Integer = 0
+
+                                Dim rdrForPm As IDataReader = dbMethod.ExecuteReader("RdMntMachineSchedule", CommandType.StoredProcedure, prmForPm)
+
+                                While rdrForPm.Read
+                                    totalPerWeek += 1
+
+                                    If rdrForPm("TrxId") Is DBNull.Value AndAlso rdrForPm("ActivityBy") Is DBNull.Value AndAlso rdrForPm("ActivityDate") Is DBNull.Value Then
+                                        Dim arrStr(3) As String
+                                        arrStr(0) = rdrForPm("MachineName").ToString
+                                        arrStr(1) = rdrForPm("MachineId")
+                                        arrStr(2) = ""
+
+                                        Dim lsvItem As ListViewItem
+                                        lsvItem = New ListViewItem(arrStr)
+                                        lstScheduled(rowScheduled).Items.Add(lsvItem)
+                                    End If
+                                End While
+                                rdrForPm.Close()
+
+                                lstScheduled(rowScheduled).Columns.Item(0).Width = -1
+
+                                If accomplished.Equals(totalPerWeek) AndAlso (accomplished <> 0 AndAlso totalPerWeek <> 0) Then
+                                    lblScheduled(rowScheduled).Text += "  (100%)"
+                                ElseIf accomplished = 0 AndAlso totalPerWeek = 0 Then
+                                    lblScheduled(rowScheduled).Text += "  (0%)"
+                                Else
+                                    accomplished = totalPerWeek - CDbl(lstScheduled(rowScheduled).Items.Count)
+
+                                    Dim percentage As Double = (CDbl(accomplished) / CDbl(totalPerWeek)) * 100
+                                    lblScheduled(rowScheduled).Text += "  (" & Math.Round(percentage, MidpointRounding.AwayFromZero) & "%)"
+                                End If
+
+                            ElseIf cmbView.SelectedValue = 2 Then 'taping
+                                Dim prmForPm(1) As SqlParameter
+                                prmForPm(0) = New SqlParameter("@WeekId", SqlDbType.Int)
+                                prmForPm(0).Value = GetWeekNumber(indexDate)
+                                prmForPm(1) = New SqlParameter("@JigTypeId", SqlDbType.Int)
+                                prmForPm(1).Value = 1
+
+                                Dim accomplished As Integer = 0
+                                Dim totalPerWeek As Integer = 0
+
+                                Dim rdrForPm As IDataReader = dbMethod.ExecuteReader("RdMntJigSchedule", CommandType.StoredProcedure, prmForPm)
+
+                                While rdrForPm.Read
+                                    totalPerWeek += 1
+
+                                    If rdrForPm("TrxId") Is DBNull.Value AndAlso rdrForPm("ActivityBy") Is DBNull.Value AndAlso rdrForPm("ActivityDate") Is DBNull.Value Then
+                                        Dim arrStr(3) As String
+                                        arrStr(0) = rdrForPm("JigCompleteName").ToString
+                                        arrStr(1) = rdrForPm("JigId")
+                                        arrStr(2) = ""
+
+                                        Dim lsvItem As ListViewItem
+                                        lsvItem = New ListViewItem(arrStr)
+                                        lstScheduled(rowScheduled).Items.Add(lsvItem)
+                                    End If
+                                End While
+                                rdrForPm.Close()
+
+                                lstScheduled(rowScheduled).Columns.Item(0).Width = -1
+
+                                If accomplished.Equals(totalPerWeek) AndAlso (accomplished <> 0 AndAlso totalPerWeek <> 0) Then
+                                    lblScheduled(rowScheduled).Text += "  (100%)"
+                                ElseIf accomplished = 0 AndAlso totalPerWeek = 0 Then
+                                    lblScheduled(rowScheduled).Text += "  (0%)"
+                                Else
+                                    accomplished = totalPerWeek - CDbl(lstScheduled(rowScheduled).Items.Count)
+
+                                    Dim percentage As Double = (CDbl(accomplished) / CDbl(totalPerWeek)) * 100
+                                    lblScheduled(rowScheduled).Text += "  (" & Math.Round(percentage, MidpointRounding.AwayFromZero) & "%)"
+                                End If
+
+                            ElseIf cmbView.SelectedValue = 3 Then 'qcf
+                                Dim prmForPm(1) As SqlParameter
+                                prmForPm(0) = New SqlParameter("@WeekId", SqlDbType.Int)
+                                prmForPm(0).Value = GetWeekNumber(indexDate)
+                                prmForPm(1) = New SqlParameter("@JigTypeId", SqlDbType.Int)
+                                prmForPm(1).Value = 2
+
+                                Dim accomplished As Integer = 0
+                                Dim totalPerWeek As Integer = 0
+
+                                Dim rdrForPm As IDataReader = dbMethod.ExecuteReader("RdMntJigSchedule", CommandType.StoredProcedure, prmForPm)
+
+                                While rdrForPm.Read
+                                    totalPerWeek += 1
+
+                                    If rdrForPm("TrxId") Is DBNull.Value AndAlso rdrForPm("ActivityBy") Is DBNull.Value AndAlso rdrForPm("ActivityDate") Is DBNull.Value Then
+                                        Dim arrStr(3) As String
+                                        arrStr(0) = rdrForPm("JigCompleteName").ToString
+                                        arrStr(1) = rdrForPm("JigId")
+                                        arrStr(2) = ""
+
+                                        Dim lsvItem As ListViewItem
+                                        lsvItem = New ListViewItem(arrStr)
+                                        lstScheduled(rowScheduled).Items.Add(lsvItem)
+                                    End If
+                                End While
+                                rdrForPm.Close()
+
+                                lstScheduled(rowScheduled).Columns.Item(0).Width = -1
+
+                                If accomplished.Equals(totalPerWeek) AndAlso (accomplished <> 0 AndAlso totalPerWeek <> 0) Then
+                                    lblScheduled(rowScheduled).Text += "  (100%)"
+                                ElseIf accomplished = 0 AndAlso totalPerWeek = 0 Then
+                                    lblScheduled(rowScheduled).Text += "  (0%)"
+                                Else
+                                    accomplished = totalPerWeek - CDbl(lstScheduled(rowScheduled).Items.Count)
+
+                                    Dim percentage As Double = (CDbl(accomplished) / CDbl(totalPerWeek)) * 100
+                                    lblScheduled(rowScheduled).Text += "  (" & Math.Round(percentage, MidpointRounding.AwayFromZero) & "%)"
+                                End If
+
+                            ElseIf cmbView.SelectedValue = 4 Then 'steering
+                                Dim prmForPm(1) As SqlParameter
+                                prmForPm(0) = New SqlParameter("@WeekId", SqlDbType.Int)
+                                prmForPm(0).Value = GetWeekNumber(indexDate)
+                                prmForPm(1) = New SqlParameter("@JigTypeId", SqlDbType.Int)
+                                prmForPm(1).Value = 3
+
+                                Dim accomplished As Integer = 0
+                                Dim totalPerWeek As Integer = 0
+
+                                Dim rdrForPm As IDataReader = dbMethod.ExecuteReader("RdMntJigSchedule", CommandType.StoredProcedure, prmForPm)
+
+                                While rdrForPm.Read
+                                    totalPerWeek += 1
+
+                                    If rdrForPm("TrxId") Is DBNull.Value AndAlso rdrForPm("ActivityBy") Is DBNull.Value AndAlso rdrForPm("ActivityDate") Is DBNull.Value Then
+                                        Dim arrStr(3) As String
+                                        arrStr(0) = rdrForPm("JigCompleteName").ToString
+                                        arrStr(1) = rdrForPm("JigId")
+                                        arrStr(2) = ""
+
+                                        Dim lsvItem As ListViewItem
+                                        lsvItem = New ListViewItem(arrStr)
+                                        lstScheduled(rowScheduled).Items.Add(lsvItem)
+                                    End If
+                                End While
+                                rdrForPm.Close()
+
+                                lstScheduled(rowScheduled).Columns.Item(0).Width = -1
+
+                                If accomplished.Equals(totalPerWeek) AndAlso (accomplished <> 0 AndAlso totalPerWeek <> 0) Then
+                                    lblScheduled(rowScheduled).Text += "  (100%)"
+                                ElseIf accomplished = 0 AndAlso totalPerWeek = 0 Then
+                                    lblScheduled(rowScheduled).Text += "  (0%)"
+                                Else
+                                    accomplished = totalPerWeek - CDbl(lstScheduled(rowScheduled).Items.Count)
+
+                                    Dim percentage As Double = (CDbl(accomplished) / CDbl(totalPerWeek)) * 100
+                                    lblScheduled(rowScheduled).Text += "  (" & Math.Round(percentage, MidpointRounding.AwayFromZero) & "%)"
+                                End If
+
+                            ElseIf cmbView.SelectedValue = 5 Then 'applicator
+                                Dim prmForPm(1) As SqlParameter
+                                prmForPm(0) = New SqlParameter("@WeekId", SqlDbType.Int)
+                                prmForPm(0).Value = GetWeekNumber(indexDate)
+                                prmForPm(1) = New SqlParameter("@JigTypeId", SqlDbType.Int)
+                                prmForPm(1).Value = 4
+
+                                Dim accomplished As Integer = 0
+                                Dim totalPerWeek As Integer = 0
+
+                                Dim rdrForPm As IDataReader = dbMethod.ExecuteReader("RdMntJigSchedule", CommandType.StoredProcedure, prmForPm)
+
+                                While rdrForPm.Read
+                                    totalPerWeek += 1
+
+                                    If rdrForPm("TrxId") Is DBNull.Value AndAlso rdrForPm("ActivityBy") Is DBNull.Value AndAlso rdrForPm("ActivityDate") Is DBNull.Value Then
+                                        Dim arrStr(3) As String
+                                        arrStr(0) = rdrForPm("JigCompleteName").ToString
+                                        arrStr(1) = rdrForPm("JigId")
+                                        arrStr(2) = ""
+
+                                        Dim lsvItem As ListViewItem
+                                        lsvItem = New ListViewItem(arrStr)
+                                        lstScheduled(rowScheduled).Items.Add(lsvItem)
+                                    End If
+                                End While
+                                rdrForPm.Close()
+
+                                lstScheduled(rowScheduled).Columns.Item(0).Width = -1
+
+                                If accomplished.Equals(totalPerWeek) AndAlso (accomplished <> 0 AndAlso totalPerWeek <> 0) Then
+                                    lblScheduled(rowScheduled).Text += "  (100%)"
+                                ElseIf accomplished = 0 AndAlso totalPerWeek = 0 Then
+                                    lblScheduled(rowScheduled).Text += "  (0%)"
+                                Else
+                                    accomplished = totalPerWeek - CDbl(lstScheduled(rowScheduled).Items.Count)
+
+                                    Dim percentage As Double = (CDbl(accomplished) / CDbl(totalPerWeek)) * 100
+                                    lblScheduled(rowScheduled).Text += "  (" & Math.Round(percentage, MidpointRounding.AwayFromZero) & "%)"
+                                End If
+
+                            ElseIf cmbView.SelectedValue = 6 Then 'csw/mr
+                                Dim prmForPm(1) As SqlParameter
+                                prmForPm(0) = New SqlParameter("@WeekId", SqlDbType.Int)
+                                prmForPm(0).Value = GetWeekNumber(indexDate)
+                                prmForPm(1) = New SqlParameter("@JigTypeId", SqlDbType.Int)
+                                prmForPm(1).Value = 5
+
+                                Dim accomplished As Integer = 0
+                                Dim totalPerWeek As Integer = 0
+
+                                Dim rdrForPm As IDataReader = dbMethod.ExecuteReader("RdMntJigSchedule", CommandType.StoredProcedure, prmForPm)
+
+                                While rdrForPm.Read
+                                    totalPerWeek += 1
+
+                                    If rdrForPm("TrxId") Is DBNull.Value AndAlso rdrForPm("ActivityBy") Is DBNull.Value AndAlso rdrForPm("ActivityDate") Is DBNull.Value Then
+                                        Dim arrStr(3) As String
+                                        arrStr(0) = rdrForPm("JigCompleteName").ToString
+                                        arrStr(1) = rdrForPm("JigId")
+                                        arrStr(2) = ""
+
+                                        Dim lsvItem As ListViewItem
+                                        lsvItem = New ListViewItem(arrStr)
+                                        lstScheduled(rowScheduled).Items.Add(lsvItem)
+                                    End If
+                                End While
+                                rdrForPm.Close()
+
+                                lstScheduled(rowScheduled).Columns.Item(0).Width = -1
+
+                                If accomplished.Equals(totalPerWeek) AndAlso (accomplished <> 0 AndAlso totalPerWeek <> 0) Then
+                                    lblScheduled(rowScheduled).Text += "  (100%)"
+                                ElseIf accomplished = 0 AndAlso totalPerWeek = 0 Then
+                                    lblScheduled(rowScheduled).Text += "  (0%)"
+                                Else
+                                    accomplished = totalPerWeek - CDbl(lstScheduled(rowScheduled).Items.Count)
+
+                                    Dim percentage As Double = (CDbl(accomplished) / CDbl(totalPerWeek)) * 100
+                                    lblScheduled(rowScheduled).Text += "  (" & Math.Round(percentage, MidpointRounding.AwayFromZero) & "%)"
+                                End If
+                            End If
+                        End If
+
                     Else
                         pnlCalendar(boxCount).BackColor = Drawing.SystemColors.Window
                         lstCalendar(boxCount).BackColor = Drawing.SystemColors.Window
                     End If
 
                     'plot the finished pm activity
-                    If cmbView.SelectedValue = 1 Then
+                    If cmbView.SelectedValue = 1 Then 'machine
                         Dim dateString() = firstDayOfMonth.ToString("yyyy-MM-dd").Split("-"c)
                         Dim dManage As DataManage = New PMSchedule.DataManage(Decimal.Parse(dateString(0)), Decimal.Parse(dateString(1)), Decimal.Parse(dateString(2)))
                         Dim prmDate As New Date(dManage.YearMonthDay(0).ToString, dManage.YearMonthDay(1).ToString, dManage.YearMonthDay(2).ToString)
@@ -569,14 +1147,152 @@ Public Class Main
                         End While
                         rdrSchedule.Close()
 
-                    Else
+                    ElseIf cmbView.SelectedValue = 2 Then 'taping
                         Dim dateString() = firstDayOfMonth.ToString("yyyy-MM-dd").Split("-"c)
                         Dim dManage As DataManage = New PMSchedule.DataManage(Decimal.Parse(dateString(0)), Decimal.Parse(dateString(1)), Decimal.Parse(dateString(2)))
                         Dim prmDate As New Date(dManage.YearMonthDay(0).ToString, dManage.YearMonthDay(1).ToString, dManage.YearMonthDay(2).ToString)
 
-                        Dim prmActDate(0) As SqlParameter
+                        Dim prmActDate(1) As SqlParameter
                         prmActDate(0) = New SqlParameter("@ActivityDate", SqlDbType.Date)
                         prmActDate(0).Value = prmDate
+                        prmActDate(1) = New SqlParameter("@JigTypeId", SqlDbType.Int)
+                        prmActDate(1).Value = 1
+
+                        Dim rdrSchedule As IDataReader = dbMethod.ExecuteReader("RdMntJigSchedule", CommandType.StoredProcedure, prmActDate)
+
+                        lblCalendar(boxCount).Text = dayCount
+
+                        While rdrSchedule.Read
+                            If Not rdrSchedule.Item("ActivityDate") Is DBNull.Value Then
+                                Dim arrStr(3) As String
+                                arrStr(0) = "● " & rdrSchedule("JigCompleteName").ToString
+                                arrStr(1) = rdrSchedule("JigId")
+                                arrStr(2) = rdrSchedule("TrxId")
+
+                                Dim lsvItem As ListViewItem
+                                lsvItem = New ListViewItem(arrStr)
+
+                                If rdrSchedule("MonthId") < selectedDate(1).ToString Then
+                                    lsvItem.ForeColor = Color.Red
+                                End If
+
+                                lstCalendar(boxCount).Items.Add(lsvItem)
+                            End If
+                        End While
+                        rdrSchedule.Close()
+
+                    ElseIf cmbView.SelectedValue = 3 Then 'qcf
+                        Dim dateString() = firstDayOfMonth.ToString("yyyy-MM-dd").Split("-"c)
+                        Dim dManage As DataManage = New PMSchedule.DataManage(Decimal.Parse(dateString(0)), Decimal.Parse(dateString(1)), Decimal.Parse(dateString(2)))
+                        Dim prmDate As New Date(dManage.YearMonthDay(0).ToString, dManage.YearMonthDay(1).ToString, dManage.YearMonthDay(2).ToString)
+
+                        Dim prmActDate(1) As SqlParameter
+                        prmActDate(0) = New SqlParameter("@ActivityDate", SqlDbType.Date)
+                        prmActDate(0).Value = prmDate
+                        prmActDate(1) = New SqlParameter("@JigTypeId", SqlDbType.Int)
+                        prmActDate(1).Value = 2
+
+                        Dim rdrSchedule As IDataReader = dbMethod.ExecuteReader("RdMntJigSchedule", CommandType.StoredProcedure, prmActDate)
+
+                        lblCalendar(boxCount).Text = dayCount
+
+                        While rdrSchedule.Read
+                            If Not rdrSchedule.Item("ActivityDate") Is DBNull.Value Then
+                                Dim arrStr(3) As String
+                                arrStr(0) = "● " & rdrSchedule("JigCompleteName").ToString
+                                arrStr(1) = rdrSchedule("JigId")
+                                arrStr(2) = rdrSchedule("TrxId")
+
+                                Dim lsvItem As ListViewItem
+                                lsvItem = New ListViewItem(arrStr)
+
+                                If rdrSchedule("MonthId") < selectedDate(1).ToString Then
+                                    lsvItem.ForeColor = Color.Red
+                                End If
+
+                                lstCalendar(boxCount).Items.Add(lsvItem)
+                            End If
+                        End While
+                        rdrSchedule.Close()
+
+                    ElseIf cmbView.SelectedValue = 4 Then 'steering
+                        Dim dateString() = firstDayOfMonth.ToString("yyyy-MM-dd").Split("-"c)
+                        Dim dManage As DataManage = New PMSchedule.DataManage(Decimal.Parse(dateString(0)), Decimal.Parse(dateString(1)), Decimal.Parse(dateString(2)))
+                        Dim prmDate As New Date(dManage.YearMonthDay(0).ToString, dManage.YearMonthDay(1).ToString, dManage.YearMonthDay(2).ToString)
+
+                        Dim prmActDate(1) As SqlParameter
+                        prmActDate(0) = New SqlParameter("@ActivityDate", SqlDbType.Date)
+                        prmActDate(0).Value = prmDate
+                        prmActDate(1) = New SqlParameter("@JigTypeId", SqlDbType.Int)
+                        prmActDate(1).Value = 3
+
+                        Dim rdrSchedule As IDataReader = dbMethod.ExecuteReader("RdMntJigSchedule", CommandType.StoredProcedure, prmActDate)
+
+                        lblCalendar(boxCount).Text = dayCount
+
+                        While rdrSchedule.Read
+                            If Not rdrSchedule.Item("ActivityDate") Is DBNull.Value Then
+                                Dim arrStr(3) As String
+                                arrStr(0) = "● " & rdrSchedule("JigCompleteName").ToString
+                                arrStr(1) = rdrSchedule("JigId")
+                                arrStr(2) = rdrSchedule("TrxId")
+
+                                Dim lsvItem As ListViewItem
+                                lsvItem = New ListViewItem(arrStr)
+
+                                If rdrSchedule("MonthId") < selectedDate(1).ToString Then
+                                    lsvItem.ForeColor = Color.Red
+                                End If
+
+                                lstCalendar(boxCount).Items.Add(lsvItem)
+                            End If
+                        End While
+                        rdrSchedule.Close()
+
+                    ElseIf cmbView.SelectedValue = 5 Then 'applicator
+                        Dim dateString() = firstDayOfMonth.ToString("yyyy-MM-dd").Split("-"c)
+                        Dim dManage As DataManage = New PMSchedule.DataManage(Decimal.Parse(dateString(0)), Decimal.Parse(dateString(1)), Decimal.Parse(dateString(2)))
+                        Dim prmDate As New Date(dManage.YearMonthDay(0).ToString, dManage.YearMonthDay(1).ToString, dManage.YearMonthDay(2).ToString)
+
+                        Dim prmActDate(1) As SqlParameter
+                        prmActDate(0) = New SqlParameter("@ActivityDate", SqlDbType.Date)
+                        prmActDate(0).Value = prmDate
+                        prmActDate(1) = New SqlParameter("@JigTypeId", SqlDbType.Int)
+                        prmActDate(1).Value = 4
+
+                        Dim rdrSchedule As IDataReader = dbMethod.ExecuteReader("RdMntJigSchedule", CommandType.StoredProcedure, prmActDate)
+
+                        lblCalendar(boxCount).Text = dayCount
+
+                        While rdrSchedule.Read
+                            If Not rdrSchedule.Item("ActivityDate") Is DBNull.Value Then
+                                Dim arrStr(3) As String
+                                arrStr(0) = "● " & rdrSchedule("JigCompleteName").ToString
+                                arrStr(1) = rdrSchedule("JigId")
+                                arrStr(2) = rdrSchedule("TrxId")
+
+                                Dim lsvItem As ListViewItem
+                                lsvItem = New ListViewItem(arrStr)
+
+                                If rdrSchedule("MonthId") < selectedDate(1).ToString Then
+                                    lsvItem.ForeColor = Color.Red
+                                End If
+
+                                lstCalendar(boxCount).Items.Add(lsvItem)
+                            End If
+                        End While
+                        rdrSchedule.Close()
+
+                    ElseIf cmbView.SelectedValue = 6 Then 'csw/mr
+                        Dim dateString() = firstDayOfMonth.ToString("yyyy-MM-dd").Split("-"c)
+                        Dim dManage As DataManage = New PMSchedule.DataManage(Decimal.Parse(dateString(0)), Decimal.Parse(dateString(1)), Decimal.Parse(dateString(2)))
+                        Dim prmDate As New Date(dManage.YearMonthDay(0).ToString, dManage.YearMonthDay(1).ToString, dManage.YearMonthDay(2).ToString)
+
+                        Dim prmActDate(1) As SqlParameter
+                        prmActDate(0) = New SqlParameter("@ActivityDate", SqlDbType.Date)
+                        prmActDate(0).Value = prmDate
+                        prmActDate(1) = New SqlParameter("@JigTypeId", SqlDbType.Int)
+                        prmActDate(1).Value = 5
 
                         Dim rdrSchedule As IDataReader = dbMethod.ExecuteReader("RdMntJigSchedule", CommandType.StoredProcedure, prmActDate)
 
@@ -618,37 +1334,6 @@ Public Class Main
         End While
     End Sub
 
-    Private Sub tmrMain_Tick(sender As Object, e As EventArgs) Handles tmrMain.Tick
-        If Minute(dbMethod.GetServerDate).Equals(30) AndAlso Second(dbMethod.GetServerDate).Equals(0) Then 'execute every 30 mins
-            tmrMain.Enabled = False
-            Me.SuspendLayout()
-            Me.ChangeCalendar()
-            Me.ResumeLayout()
-            tmrMain.Enabled = True
-        End If
-
-        'show a notification of pending pm every 8 am and 8 pm
-        If (Hour(dbMethod.GetServerDate).Equals(8) AndAlso Minute(dbMethod.GetServerDate).Equals(0) AndAlso Second(dbMethod.GetServerDate).Equals(0)) Or
-            (Hour(dbMethod.GetServerDate).Equals(20) AndAlso Minute(dbMethod.GetServerDate).Equals(0) AndAlso Second(dbMethod.GetServerDate).Equals(0)) Then
-
-            Dim currentDate As Date = New Date(Year(dbMethod.GetServerDate), Month(dbMethod.GetServerDate), DateAndTime.Day(dbMethod.GetServerDate))
-
-            If IsIncomingMonthEnd(currentDate) Then
-                ShowNotification()
-            End If
-        End If
-    End Sub
-
-    Private Sub Main_KeyDown(sender As Object, e As KeyEventArgs) Handles Me.KeyDown
-        Try
-            If e.Control AndAlso e.KeyCode.Equals(Keys.F12) Then
-                ShowNotification()
-            End If
-        Catch ex As Exception
-            MessageBox.Show(dbMain.SetExceptionMessage(ex), "", MessageBoxButtons.OK, MessageBoxIcon.Error)
-        End Try
-    End Sub
-
     Private Sub ShowNotification()
         Try
             Dim currentDate As Date = New Date(Year(dbMethod.GetServerDate), Month(dbMethod.GetServerDate), DateAndTime.Day(dbMethod.GetServerDate))
@@ -683,6 +1368,27 @@ Public Class Main
         Catch ex As Exception
             MessageBox.Show(dbMain.SetExceptionMessage(ex), "", MessageBoxButtons.OK, MessageBoxIcon.Error)
         End Try
+    End Sub
+
+    Private Sub tmrMain_Tick(sender As Object, e As EventArgs) Handles tmrMain.Tick
+        If Minute(dbMethod.GetServerDate).Equals(30) AndAlso Second(dbMethod.GetServerDate).Equals(0) Then 'execute every 30 mins
+            tmrMain.Enabled = False
+            Me.SuspendLayout()
+            Me.ChangeCalendar()
+            Me.ResumeLayout()
+            tmrMain.Enabled = True
+        End If
+
+        'show a notification of pending pm every 8 am and 8 pm
+        If (Hour(dbMethod.GetServerDate).Equals(8) AndAlso Minute(dbMethod.GetServerDate).Equals(0) AndAlso Second(dbMethod.GetServerDate).Equals(0)) Or
+            (Hour(dbMethod.GetServerDate).Equals(20) AndAlso Minute(dbMethod.GetServerDate).Equals(0) AndAlso Second(dbMethod.GetServerDate).Equals(0)) Then
+
+            Dim currentDate As Date = New Date(Year(dbMethod.GetServerDate), Month(dbMethod.GetServerDate), DateAndTime.Day(dbMethod.GetServerDate))
+
+            If IsIncomingMonthEnd(currentDate) Then
+                ShowNotification()
+            End If
+        End If
     End Sub
 
 End Class
