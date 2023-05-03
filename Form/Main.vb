@@ -44,6 +44,7 @@ Public Class Main
         cmbView.DataSource = New BindingSource(dicType, Nothing)
 
         cmbView.SelectedValue = 1 'default view to machine schedule
+        txtYear.Text = Year(dbMethod.GetServerDate)
 
         'set current date as default date
         Dim currentDate As Date = CDate(dbMethod.GetServerDate)
@@ -577,7 +578,7 @@ Public Class Main
         End Select
 
         tempCt = blankCount - 1
-        Dim row = 1, boxCount = 0, dayCount = 1
+        Dim row = 1, boxCount = 0, dayCount = 1 ', col = 1
 
         While row <= 7
             Dim col = 1
@@ -601,14 +602,16 @@ Public Class Main
                         Dim indexDate As Date = New Date(selectedDate(0).ToString, selectedDate(1).ToString, dayCount)
                         Dim validDate As Date = indexDate.AddDays(4)
 
-                        If GetWeekNumber(indexDate).Equals(GetWeekNumber(validDate)) AndAlso Month(indexDate).Equals(Month(validDate)) Then
+                        If GetWeekNumber(indexDate).Equals(GetWeekNumber(validDate)) Then 'AndAlso Month(indexDate).Equals(Month(validDate)) Then
                             lblScheduled(rowScheduled).Text = "Week " & GetWeekNumber(indexDate)
 
                             'plot the pending pm schedule
                             If cmbView.SelectedValue = 1 Then 'machine
-                                Dim prmForPm(0) As SqlParameter
+                                Dim prmForPm(1) As SqlParameter
                                 prmForPm(0) = New SqlParameter("@WeekId", SqlDbType.Int)
                                 prmForPm(0).Value = GetWeekNumber(indexDate)
+                                prmForPm(1) = New SqlParameter("@YearId", SqlDbType.Int)
+                                prmForPm(1).Value = txtYear.Text
 
                                 Dim accomplished As Integer = 0
                                 Dim totalPerWeek As Integer = 0
@@ -645,11 +648,13 @@ Public Class Main
                                 End If
 
                             ElseIf cmbView.SelectedValue = 2 Then 'taping jig
-                                Dim prmForPm(1) As SqlParameter
+                                Dim prmForPm(2) As SqlParameter
                                 prmForPm(0) = New SqlParameter("@WeekId", SqlDbType.Int)
                                 prmForPm(0).Value = GetWeekNumber(indexDate)
                                 prmForPm(1) = New SqlParameter("@JigTypeId", SqlDbType.Int)
                                 prmForPm(1).Value = 1
+                                prmForPm(2) = New SqlParameter("@YearId", SqlDbType.Int)
+                                prmForPm(2).Value = txtYear.Text
 
                                 Dim accomplished As Integer = 0
                                 Dim totalPerWeek As Integer = 0
@@ -686,11 +691,13 @@ Public Class Main
                                 End If
 
                             ElseIf cmbView.SelectedValue = 3 Then 'qcf
-                                Dim prmForPm(1) As SqlParameter
+                                Dim prmForPm(2) As SqlParameter
                                 prmForPm(0) = New SqlParameter("@WeekId", SqlDbType.Int)
                                 prmForPm(0).Value = GetWeekNumber(indexDate)
                                 prmForPm(1) = New SqlParameter("@JigTypeId", SqlDbType.Int)
                                 prmForPm(1).Value = 2
+                                prmForPm(2) = New SqlParameter("@YearId", SqlDbType.Int)
+                                prmForPm(2).Value = txtYear.Text
 
                                 Dim accomplished As Integer = 0
                                 Dim totalPerWeek As Integer = 0
@@ -727,11 +734,13 @@ Public Class Main
                                 End If
 
                             ElseIf cmbView.SelectedValue = 4 Then 'steering
-                                Dim prmForPm(1) As SqlParameter
+                                Dim prmForPm(2) As SqlParameter
                                 prmForPm(0) = New SqlParameter("@WeekId", SqlDbType.Int)
                                 prmForPm(0).Value = GetWeekNumber(indexDate)
                                 prmForPm(1) = New SqlParameter("@JigTypeId", SqlDbType.Int)
                                 prmForPm(1).Value = 3
+                                prmForPm(2) = New SqlParameter("@YearId", SqlDbType.Int)
+                                prmForPm(2).Value = txtYear.Text
 
                                 Dim accomplished As Integer = 0
                                 Dim totalPerWeek As Integer = 0
@@ -768,11 +777,13 @@ Public Class Main
                                 End If
 
                             ElseIf cmbView.SelectedValue = 5 Then 'applicator
-                                Dim prmForPm(1) As SqlParameter
+                                Dim prmForPm(2) As SqlParameter
                                 prmForPm(0) = New SqlParameter("@WeekId", SqlDbType.Int)
                                 prmForPm(0).Value = GetWeekNumber(indexDate)
                                 prmForPm(1) = New SqlParameter("@JigTypeId", SqlDbType.Int)
                                 prmForPm(1).Value = 4
+                                prmForPm(2) = New SqlParameter("@YearId", SqlDbType.Int)
+                                prmForPm(2).Value = txtYear.Text
 
                                 Dim accomplished As Integer = 0
                                 Dim totalPerWeek As Integer = 0
@@ -809,11 +820,13 @@ Public Class Main
                                 End If
 
                             ElseIf cmbView.SelectedValue = 6 Then 'csw/mr
-                                Dim prmForPm(1) As SqlParameter
+                                Dim prmForPm(2) As SqlParameter
                                 prmForPm(0) = New SqlParameter("@WeekId", SqlDbType.Int)
                                 prmForPm(0).Value = GetWeekNumber(indexDate)
                                 prmForPm(1) = New SqlParameter("@JigTypeId", SqlDbType.Int)
                                 prmForPm(1).Value = 5
+                                prmForPm(2) = New SqlParameter("@YearId", SqlDbType.Int)
+                                prmForPm(2).Value = txtYear.Text
 
                                 Dim accomplished As Integer = 0
                                 Dim totalPerWeek As Integer = 0
@@ -857,16 +870,18 @@ Public Class Main
 
                         Dim rowScheduled As Integer = row - 2
                         Dim indexDate As Date = New Date(selectedDate(0).ToString, selectedDate(1).ToString, dayCount)
-                        Dim validDate As Date = indexDate.AddDays(-4)
+                        Dim validDate As Date = indexDate.AddDays(-3)
 
-                        If GetWeekNumber(indexDate).Equals(GetWeekNumber(validDate)) AndAlso Month(indexDate).Equals(Month(validDate)) AndAlso Not Month(indexDate).Equals(Month(indexDate.AddDays(-7))) Then
+                        If GetWeekNumber(indexDate).Equals(GetWeekNumber(validDate)) AndAlso Month(indexDate).Equals(Month(validDate)) AndAlso Not Month(indexDate).Equals(Month(indexDate.AddDays(-6))) Then
                             lblScheduled(rowScheduled).Text = "Week " & GetWeekNumber(indexDate)
 
                             'plot the pending pm schedule
                             If cmbView.SelectedValue = 1 Then 'machine
-                                Dim prmForPm(0) As SqlParameter
+                                Dim prmForPm(1) As SqlParameter
                                 prmForPm(0) = New SqlParameter("@WeekId", SqlDbType.Int)
                                 prmForPm(0).Value = GetWeekNumber(indexDate)
+                                prmForPm(1) = New SqlParameter("@YearId", SqlDbType.Int)
+                                prmForPm(1).Value = txtYear.Text
 
                                 Dim accomplished As Integer = 0
                                 Dim totalPerWeek As Integer = 0
@@ -903,11 +918,13 @@ Public Class Main
                                 End If
 
                             ElseIf cmbView.SelectedValue = 2 Then 'taping
-                                Dim prmForPm(1) As SqlParameter
+                                Dim prmForPm(2) As SqlParameter
                                 prmForPm(0) = New SqlParameter("@WeekId", SqlDbType.Int)
                                 prmForPm(0).Value = GetWeekNumber(indexDate)
                                 prmForPm(1) = New SqlParameter("@JigTypeId", SqlDbType.Int)
                                 prmForPm(1).Value = 1
+                                prmForPm(2) = New SqlParameter("@YearId", SqlDbType.Int)
+                                prmForPm(2).Value = txtYear.Text
 
                                 Dim accomplished As Integer = 0
                                 Dim totalPerWeek As Integer = 0
@@ -944,11 +961,13 @@ Public Class Main
                                 End If
 
                             ElseIf cmbView.SelectedValue = 3 Then 'qcf
-                                Dim prmForPm(1) As SqlParameter
+                                Dim prmForPm(2) As SqlParameter
                                 prmForPm(0) = New SqlParameter("@WeekId", SqlDbType.Int)
                                 prmForPm(0).Value = GetWeekNumber(indexDate)
                                 prmForPm(1) = New SqlParameter("@JigTypeId", SqlDbType.Int)
                                 prmForPm(1).Value = 2
+                                prmForPm(2) = New SqlParameter("@YearId", SqlDbType.Int)
+                                prmForPm(2).Value = txtYear.Text
 
                                 Dim accomplished As Integer = 0
                                 Dim totalPerWeek As Integer = 0
@@ -985,11 +1004,13 @@ Public Class Main
                                 End If
 
                             ElseIf cmbView.SelectedValue = 4 Then 'steering
-                                Dim prmForPm(1) As SqlParameter
+                                Dim prmForPm(2) As SqlParameter
                                 prmForPm(0) = New SqlParameter("@WeekId", SqlDbType.Int)
                                 prmForPm(0).Value = GetWeekNumber(indexDate)
                                 prmForPm(1) = New SqlParameter("@JigTypeId", SqlDbType.Int)
                                 prmForPm(1).Value = 3
+                                prmForPm(2) = New SqlParameter("@YearId", SqlDbType.Int)
+                                prmForPm(2).Value = txtYear.Text
 
                                 Dim accomplished As Integer = 0
                                 Dim totalPerWeek As Integer = 0
@@ -1026,11 +1047,13 @@ Public Class Main
                                 End If
 
                             ElseIf cmbView.SelectedValue = 5 Then 'applicator
-                                Dim prmForPm(1) As SqlParameter
+                                Dim prmForPm(2) As SqlParameter
                                 prmForPm(0) = New SqlParameter("@WeekId", SqlDbType.Int)
                                 prmForPm(0).Value = GetWeekNumber(indexDate)
                                 prmForPm(1) = New SqlParameter("@JigTypeId", SqlDbType.Int)
                                 prmForPm(1).Value = 4
+                                prmForPm(2) = New SqlParameter("@YearId", SqlDbType.Int)
+                                prmForPm(2).Value = txtYear.Text
 
                                 Dim accomplished As Integer = 0
                                 Dim totalPerWeek As Integer = 0
@@ -1067,11 +1090,13 @@ Public Class Main
                                 End If
 
                             ElseIf cmbView.SelectedValue = 6 Then 'csw/mr
-                                Dim prmForPm(1) As SqlParameter
+                                Dim prmForPm(2) As SqlParameter
                                 prmForPm(0) = New SqlParameter("@WeekId", SqlDbType.Int)
                                 prmForPm(0).Value = GetWeekNumber(indexDate)
                                 prmForPm(1) = New SqlParameter("@JigTypeId", SqlDbType.Int)
                                 prmForPm(1).Value = 5
+                                prmForPm(2) = New SqlParameter("@YearId", SqlDbType.Int)
+                                prmForPm(2).Value = txtYear.Text
 
                                 Dim accomplished As Integer = 0
                                 Dim totalPerWeek As Integer = 0

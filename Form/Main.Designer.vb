@@ -25,6 +25,7 @@ Partial Class Main
         Me.components = New System.ComponentModel.Container()
         Dim resources As System.ComponentModel.ComponentResourceManager = New System.ComponentModel.ComponentResourceManager(GetType(Main))
         Me.pnlTop = New System.Windows.Forms.Panel()
+        Me.btnChecksheet = New PinkieControls.ButtonXP()
         Me.txtFraction = New System.Windows.Forms.Label()
         Me.lblEquals = New System.Windows.Forms.Label()
         Me.lblCompletion = New System.Windows.Forms.Label()
@@ -51,7 +52,6 @@ Partial Class Main
         Me.lblFriday = New System.Windows.Forms.Label()
         Me.lblSaturday = New System.Windows.Forms.Label()
         Me.lblScheduledHeader = New System.Windows.Forms.Label()
-        Me.btnChecksheet = New PinkieControls.ButtonXP()
         Me.pnlTop.SuspendLayout()
         Me.tlpCalendar.SuspendLayout()
         Me.SuspendLayout()
@@ -79,6 +79,21 @@ Partial Class Main
         Me.pnlTop.Name = "pnlTop"
         Me.pnlTop.Size = New System.Drawing.Size(1384, 60)
         Me.pnlTop.TabIndex = 0
+        '
+        'btnChecksheet
+        '
+        Me.btnChecksheet.Anchor = CType((System.Windows.Forms.AnchorStyles.Top Or System.Windows.Forms.AnchorStyles.Right), System.Windows.Forms.AnchorStyles)
+        Me.btnChecksheet.BackColor = System.Drawing.Color.FromArgb(CType(CType(0, Byte), Integer), CType(CType(240, Byte), Integer), CType(CType(240, Byte), Integer), CType(CType(240, Byte), Integer))
+        Me.btnChecksheet.DefaultScheme = True
+        Me.btnChecksheet.DialogResult = System.Windows.Forms.DialogResult.None
+        Me.btnChecksheet.Font = New System.Drawing.Font("Verdana", 9.0!)
+        Me.btnChecksheet.Hint = "View checksheet form"
+        Me.btnChecksheet.Image = CType(resources.GetObject("btnChecksheet.Image"), System.Drawing.Image)
+        Me.btnChecksheet.Location = New System.Drawing.Point(1337, 22)
+        Me.btnChecksheet.Name = "btnChecksheet"
+        Me.btnChecksheet.Scheme = PinkieControls.ButtonXP.Schemes.Blue
+        Me.btnChecksheet.Size = New System.Drawing.Size(42, 28)
+        Me.btnChecksheet.TabIndex = 247
         '
         'txtFraction
         '
@@ -197,7 +212,7 @@ Partial Class Main
         'btnGo
         '
         Me.btnGo.Anchor = CType((System.Windows.Forms.AnchorStyles.Top Or System.Windows.Forms.AnchorStyles.Right), System.Windows.Forms.AnchorStyles)
-        Me.btnGo.BackColor = System.Drawing.Color.FromArgb(CType(CType(0, Byte), Integer), CType(CType(255, Byte), Integer), CType(CType(255, Byte), Integer), CType(CType(255, Byte), Integer))
+        Me.btnGo.BackColor = System.Drawing.Color.FromArgb(CType(CType(0, Byte), Integer), CType(CType(240, Byte), Integer), CType(CType(240, Byte), Integer), CType(CType(240, Byte), Integer))
         Me.btnGo.DefaultScheme = True
         Me.btnGo.DialogResult = System.Windows.Forms.DialogResult.None
         Me.btnGo.Font = New System.Drawing.Font("Verdana", 9.0!)
@@ -233,7 +248,6 @@ Partial Class Main
         Me.txtYear.Name = "txtYear"
         Me.txtYear.Size = New System.Drawing.Size(60, 25)
         Me.txtYear.TabIndex = 220
-        Me.txtYear.Text = "2022"
         Me.txtYear.TextAlign = System.Windows.Forms.HorizontalAlignment.Center
         '
         'lblYearMonth
@@ -451,21 +465,6 @@ Partial Class Main
         Me.lblScheduledHeader.TabIndex = 8
         Me.lblScheduledHeader.Text = "FOR PM"
         Me.lblScheduledHeader.TextAlign = System.Drawing.ContentAlignment.MiddleCenter
-        '
-        'btnChecksheet
-        '
-        Me.btnChecksheet.Anchor = CType((System.Windows.Forms.AnchorStyles.Top Or System.Windows.Forms.AnchorStyles.Right), System.Windows.Forms.AnchorStyles)
-        Me.btnChecksheet.BackColor = System.Drawing.Color.FromArgb(CType(CType(0, Byte), Integer), CType(CType(255, Byte), Integer), CType(CType(255, Byte), Integer), CType(CType(255, Byte), Integer))
-        Me.btnChecksheet.DefaultScheme = True
-        Me.btnChecksheet.DialogResult = System.Windows.Forms.DialogResult.None
-        Me.btnChecksheet.Font = New System.Drawing.Font("Verdana", 9.0!)
-        Me.btnChecksheet.Hint = "View checksheet form"
-        Me.btnChecksheet.Image = CType(resources.GetObject("btnChecksheet.Image"), System.Drawing.Image)
-        Me.btnChecksheet.Location = New System.Drawing.Point(1337, 22)
-        Me.btnChecksheet.Name = "btnChecksheet"
-        Me.btnChecksheet.Scheme = PinkieControls.ButtonXP.Schemes.Blue
-        Me.btnChecksheet.Size = New System.Drawing.Size(42, 28)
-        Me.btnChecksheet.TabIndex = 247
         '
         'Main
         '
