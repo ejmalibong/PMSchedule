@@ -41,6 +41,8 @@ Partial Class Main
         Me.lblYearMonth = New System.Windows.Forms.Label()
         Me.txtPercentage = New System.Windows.Forms.Label()
         Me.lblVersion = New System.Windows.Forms.Label()
+        Me.rdFacility = New System.Windows.Forms.RadioButton()
+        Me.rdMt = New System.Windows.Forms.RadioButton()
         Me.tmrMain = New System.Windows.Forms.Timer(Me.components)
         Me.cmsMain = New System.Windows.Forms.ContextMenuStrip(Me.components)
         Me.tlpCalendar = New PMSchedule.ExtTableLayoutPanel()
@@ -74,10 +76,12 @@ Partial Class Main
         Me.pnlTop.Controls.Add(Me.lblYearMonth)
         Me.pnlTop.Controls.Add(Me.txtPercentage)
         Me.pnlTop.Controls.Add(Me.lblVersion)
+        Me.pnlTop.Controls.Add(Me.rdFacility)
+        Me.pnlTop.Controls.Add(Me.rdMt)
         Me.pnlTop.Dock = System.Windows.Forms.DockStyle.Top
         Me.pnlTop.Location = New System.Drawing.Point(0, 0)
         Me.pnlTop.Name = "pnlTop"
-        Me.pnlTop.Size = New System.Drawing.Size(1384, 60)
+        Me.pnlTop.Size = New System.Drawing.Size(1384, 56)
         Me.pnlTop.TabIndex = 0
         '
         'btnChecksheet
@@ -89,7 +93,7 @@ Partial Class Main
         Me.btnChecksheet.Font = New System.Drawing.Font("Verdana", 9.0!)
         Me.btnChecksheet.Hint = "View checksheet form"
         Me.btnChecksheet.Image = CType(resources.GetObject("btnChecksheet.Image"), System.Drawing.Image)
-        Me.btnChecksheet.Location = New System.Drawing.Point(1337, 22)
+        Me.btnChecksheet.Location = New System.Drawing.Point(1338, 22)
         Me.btnChecksheet.Name = "btnChecksheet"
         Me.btnChecksheet.Scheme = PinkieControls.ButtonXP.Schemes.Blue
         Me.btnChecksheet.Size = New System.Drawing.Size(42, 28)
@@ -103,7 +107,7 @@ Partial Class Main
         Me.txtFraction.Location = New System.Drawing.Point(403, 14)
         Me.txtFraction.Margin = New System.Windows.Forms.Padding(0)
         Me.txtFraction.Name = "txtFraction"
-        Me.txtFraction.Size = New System.Drawing.Size(106, 30)
+        Me.txtFraction.Size = New System.Drawing.Size(106, 26)
         Me.txtFraction.TabIndex = 246
         Me.txtFraction.Text = "100 / 100"
         Me.txtFraction.TextAlign = System.Drawing.ContentAlignment.MiddleCenter
@@ -114,7 +118,7 @@ Partial Class Main
         Me.lblEquals.Font = New System.Drawing.Font("Segoe UI", 11.0!, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, CType(0, Byte))
         Me.lblEquals.Location = New System.Drawing.Point(514, 20)
         Me.lblEquals.Name = "lblEquals"
-        Me.lblEquals.Size = New System.Drawing.Size(19, 20)
+        Me.lblEquals.Size = New System.Drawing.Size(19, 16)
         Me.lblEquals.TabIndex = 245
         Me.lblEquals.Text = "="
         '
@@ -124,7 +128,7 @@ Partial Class Main
         Me.lblCompletion.Font = New System.Drawing.Font("Segoe UI", 11.0!, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, CType(0, Byte))
         Me.lblCompletion.Location = New System.Drawing.Point(276, 20)
         Me.lblCompletion.Name = "lblCompletion"
-        Me.lblCompletion.Size = New System.Drawing.Size(124, 20)
+        Me.lblCompletion.Size = New System.Drawing.Size(124, 16)
         Me.lblCompletion.TabIndex = 243
         Me.lblCompletion.Text = "Completion Rate:"
         '
@@ -135,10 +139,10 @@ Partial Class Main
         Me.lblView.BorderStyle = System.Windows.Forms.BorderStyle.FixedSingle
         Me.lblView.Font = New System.Drawing.Font("Segoe UI", 9.0!)
         Me.lblView.ForeColor = System.Drawing.Color.Black
-        Me.lblView.Location = New System.Drawing.Point(712, 24)
+        Me.lblView.Location = New System.Drawing.Point(753, 24)
         Me.lblView.Name = "lblView"
         Me.lblView.Padding = New System.Windows.Forms.Padding(5, 0, 0, 0)
-        Me.lblView.Size = New System.Drawing.Size(52, 25)
+        Me.lblView.Size = New System.Drawing.Size(48, 25)
         Me.lblView.TabIndex = 224
         Me.lblView.Text = "View"
         Me.lblView.TextAlign = System.Drawing.ContentAlignment.MiddleCenter
@@ -149,7 +153,7 @@ Partial Class Main
         Me.cmbView.DropDownStyle = System.Windows.Forms.ComboBoxStyle.DropDownList
         Me.cmbView.Font = New System.Drawing.Font("Segoe UI", 10.0!)
         Me.cmbView.FormattingEnabled = True
-        Me.cmbView.Location = New System.Drawing.Point(763, 24)
+        Me.cmbView.Location = New System.Drawing.Point(800, 24)
         Me.cmbView.Name = "cmbView"
         Me.cmbView.Size = New System.Drawing.Size(90, 25)
         Me.cmbView.TabIndex = 9
@@ -176,7 +180,7 @@ Partial Class Main
         Me.lblMonth.BorderStyle = System.Windows.Forms.BorderStyle.FixedSingle
         Me.lblMonth.Font = New System.Drawing.Font("Segoe UI", 9.0!)
         Me.lblMonth.ForeColor = System.Drawing.Color.Black
-        Me.lblMonth.Location = New System.Drawing.Point(857, 24)
+        Me.lblMonth.Location = New System.Drawing.Point(894, 24)
         Me.lblMonth.Name = "lblMonth"
         Me.lblMonth.Padding = New System.Windows.Forms.Padding(5, 0, 0, 0)
         Me.lblMonth.Size = New System.Drawing.Size(55, 25)
@@ -189,7 +193,7 @@ Partial Class Main
         Me.cmbMonth.Anchor = CType((System.Windows.Forms.AnchorStyles.Top Or System.Windows.Forms.AnchorStyles.Right), System.Windows.Forms.AnchorStyles)
         Me.cmbMonth.Font = New System.Drawing.Font("Segoe UI", 10.0!)
         Me.cmbMonth.FormattingEnabled = True
-        Me.cmbMonth.Location = New System.Drawing.Point(911, 24)
+        Me.cmbMonth.Location = New System.Drawing.Point(948, 24)
         Me.cmbMonth.Name = "cmbMonth"
         Me.cmbMonth.Size = New System.Drawing.Size(140, 25)
         Me.cmbMonth.TabIndex = 217
@@ -217,10 +221,10 @@ Partial Class Main
         Me.btnGo.DialogResult = System.Windows.Forms.DialogResult.None
         Me.btnGo.Font = New System.Drawing.Font("Verdana", 9.0!)
         Me.btnGo.Hint = ""
-        Me.btnGo.Location = New System.Drawing.Point(1169, 22)
+        Me.btnGo.Location = New System.Drawing.Point(1202, 22)
         Me.btnGo.Name = "btnGo"
         Me.btnGo.Scheme = PinkieControls.ButtonXP.Schemes.Blue
-        Me.btnGo.Size = New System.Drawing.Size(75, 28)
+        Me.btnGo.Size = New System.Drawing.Size(42, 28)
         Me.btnGo.TabIndex = 15
         Me.btnGo.Text = "Go"
         '
@@ -231,10 +235,10 @@ Partial Class Main
         Me.lblYear.BorderStyle = System.Windows.Forms.BorderStyle.FixedSingle
         Me.lblYear.Font = New System.Drawing.Font("Segoe UI", 9.0!)
         Me.lblYear.ForeColor = System.Drawing.Color.Black
-        Me.lblYear.Location = New System.Drawing.Point(1055, 24)
+        Me.lblYear.Location = New System.Drawing.Point(1092, 24)
         Me.lblYear.Name = "lblYear"
         Me.lblYear.Padding = New System.Windows.Forms.Padding(5, 0, 0, 0)
-        Me.lblYear.Size = New System.Drawing.Size(52, 25)
+        Me.lblYear.Size = New System.Drawing.Size(48, 25)
         Me.lblYear.TabIndex = 219
         Me.lblYear.Text = "Year"
         Me.lblYear.TextAlign = System.Drawing.ContentAlignment.MiddleCenter
@@ -244,7 +248,7 @@ Partial Class Main
         Me.txtYear.Anchor = CType((System.Windows.Forms.AnchorStyles.Top Or System.Windows.Forms.AnchorStyles.Right), System.Windows.Forms.AnchorStyles)
         Me.txtYear.BorderStyle = System.Windows.Forms.BorderStyle.FixedSingle
         Me.txtYear.Font = New System.Drawing.Font("Segoe UI", 10.0!)
-        Me.txtYear.Location = New System.Drawing.Point(1106, 24)
+        Me.txtYear.Location = New System.Drawing.Point(1139, 24)
         Me.txtYear.Name = "txtYear"
         Me.txtYear.Size = New System.Drawing.Size(60, 25)
         Me.txtYear.TabIndex = 220
@@ -270,7 +274,7 @@ Partial Class Main
         Me.txtPercentage.ForeColor = System.Drawing.Color.Black
         Me.txtPercentage.Location = New System.Drawing.Point(532, -2)
         Me.txtPercentage.Name = "txtPercentage"
-        Me.txtPercentage.Size = New System.Drawing.Size(149, 62)
+        Me.txtPercentage.Size = New System.Drawing.Size(149, 58)
         Me.txtPercentage.TabIndex = 244
         Me.txtPercentage.Text = "100%"
         Me.txtPercentage.TextAlign = System.Drawing.ContentAlignment.MiddleCenter
@@ -279,12 +283,38 @@ Partial Class Main
         '
         Me.lblVersion.Anchor = CType((System.Windows.Forms.AnchorStyles.Top Or System.Windows.Forms.AnchorStyles.Right), System.Windows.Forms.AnchorStyles)
         Me.lblVersion.Font = New System.Drawing.Font("Segoe UI", 8.0!, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, CType(0, Byte))
-        Me.lblVersion.Location = New System.Drawing.Point(1084, 0)
+        Me.lblVersion.Location = New System.Drawing.Point(1088, 0)
         Me.lblVersion.Name = "lblVersion"
         Me.lblVersion.Size = New System.Drawing.Size(292, 15)
         Me.lblVersion.TabIndex = 3
         Me.lblVersion.Text = "F-MNT-002-4 Eff: 05/18/2022"
         Me.lblVersion.TextAlign = System.Drawing.ContentAlignment.MiddleRight
+        '
+        'rdFacility
+        '
+        Me.rdFacility.Anchor = CType((System.Windows.Forms.AnchorStyles.Top Or System.Windows.Forms.AnchorStyles.Right), System.Windows.Forms.AnchorStyles)
+        Me.rdFacility.AutoSize = True
+        Me.rdFacility.Font = New System.Drawing.Font("Segoe UI", 8.0!, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, CType(0, Byte))
+        Me.rdFacility.Location = New System.Drawing.Point(950, 2)
+        Me.rdFacility.Name = "rdFacility"
+        Me.rdFacility.Size = New System.Drawing.Size(60, 17)
+        Me.rdFacility.TabIndex = 249
+        Me.rdFacility.TabStop = True
+        Me.rdFacility.Text = "Facility"
+        Me.rdFacility.UseVisualStyleBackColor = True
+        '
+        'rdMt
+        '
+        Me.rdMt.Anchor = CType((System.Windows.Forms.AnchorStyles.Top Or System.Windows.Forms.AnchorStyles.Right), System.Windows.Forms.AnchorStyles)
+        Me.rdMt.AutoSize = True
+        Me.rdMt.Font = New System.Drawing.Font("Segoe UI", 8.0!, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, CType(0, Byte))
+        Me.rdMt.Location = New System.Drawing.Point(757, 2)
+        Me.rdMt.Name = "rdMt"
+        Me.rdMt.Size = New System.Drawing.Size(157, 17)
+        Me.rdMt.TabIndex = 248
+        Me.rdMt.TabStop = True
+        Me.rdMt.Text = "Manufacturing Techology"
+        Me.rdMt.UseVisualStyleBackColor = True
         '
         'tmrMain
         '
@@ -317,7 +347,7 @@ Partial Class Main
         Me.tlpCalendar.Controls.Add(Me.lblScheduledHeader, 0, 0)
         Me.tlpCalendar.Dock = System.Windows.Forms.DockStyle.Fill
         Me.tlpCalendar.Font = New System.Drawing.Font("Segoe UI", 10.5!, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, CType(0, Byte))
-        Me.tlpCalendar.Location = New System.Drawing.Point(0, 60)
+        Me.tlpCalendar.Location = New System.Drawing.Point(0, 56)
         Me.tlpCalendar.Name = "tlpCalendar"
         Me.tlpCalendar.RowCount = 7
         Me.tlpCalendar.RowStyles.Add(New System.Windows.Forms.RowStyle(System.Windows.Forms.SizeType.Percent, 14.28571!))
@@ -327,7 +357,7 @@ Partial Class Main
         Me.tlpCalendar.RowStyles.Add(New System.Windows.Forms.RowStyle(System.Windows.Forms.SizeType.Percent, 14.28572!))
         Me.tlpCalendar.RowStyles.Add(New System.Windows.Forms.RowStyle(System.Windows.Forms.SizeType.Percent, 14.28571!))
         Me.tlpCalendar.RowStyles.Add(New System.Windows.Forms.RowStyle(System.Windows.Forms.SizeType.Percent, 14.28572!))
-        Me.tlpCalendar.Size = New System.Drawing.Size(1384, 639)
+        Me.tlpCalendar.Size = New System.Drawing.Size(1384, 643)
         Me.tlpCalendar.TabIndex = 2
         '
         'lblSunday
@@ -518,4 +548,6 @@ Partial Class Main
     Friend WithEvents lblCompletion As Label
     Friend WithEvents lblVersion As Label
     Friend WithEvents btnChecksheet As PinkieControls.ButtonXP
+    Friend WithEvents rdFacility As RadioButton
+    Friend WithEvents rdMt As RadioButton
 End Class

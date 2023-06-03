@@ -3,7 +3,6 @@ Imports System.Deployment.Application
 Imports System.Globalization
 Imports System.IO
 Imports BlackCoffeeLibrary
-Imports System.Linq
 
 Public Class Main
     Private dbConnection As New Connection
@@ -27,21 +26,39 @@ Public Class Main
     Private totalCurrent As Integer = 0
     Private totalItem As Integer = 0
 
+    Private hostName As String = String.Empty
+    Private sectionId As Integer = 0
+
     Public Sub New()
 
         ' This call is required by the designer.
         InitializeComponent()
 
         ' Add any initialization after the InitializeComponent() call.
-        dicType.Add(" Machine", 1)
-        dicType.Add(" Taping", 2)
-        dicType.Add(" QCF", 3)
-        dicType.Add(" Steering", 4)
-        dicType.Add(" Applicator", 5)
-        dicType.Add(" CSW/MR", 6)
-        cmbView.DisplayMember = "Key"
-        cmbView.ValueMember = "Value"
-        cmbView.DataSource = New BindingSource(dicType, Nothing)
+        hostName = Environment.MachineName.ToString
+
+        Dim prmMchName(0) As SqlParameter
+        prmMchName(0) = New SqlParameter("@Hostname", SqlDbType.NVarChar)
+        prmMchName(0).Value = hostName
+
+        sectionId = dbMethod.ExecuteScalar("SELECT SectionId FROM dbo.SecHostname WHERE TRIM(Hostname) = @Hostname", CommandType.Text, prmMchName)
+
+        Select Case sectionId
+            Case 1, 4
+                rdMt.Enabled = True
+                rdFacility.Enabled = True
+                rdMt.Checked = True
+
+            Case 2 'mt
+                rdMt.Visible = False
+                rdFacility.Visible = False
+                rdMt.Checked = True
+
+            Case 3 'facility
+                rdMt.Visible = False
+                rdFacility.Visible = False
+                rdFacility.Checked = True
+        End Select
 
         cmbView.SelectedValue = 1 'default view to machine schedule
         txtYear.Text = Year(dbMethod.GetServerDate)
@@ -244,19 +261,35 @@ Public Class Main
             SettingCalendar()
 
             If cmbView.SelectedValue = 1 Then 'machine
-                Dim prmTotal(1) As SqlParameter
-                prmTotal(0) = New SqlParameter("@MonthId", SqlDbType.Int)
-                prmTotal(0).Value = CInt(selectedDate(1))
-                prmTotal(1) = New SqlParameter("@YearId", SqlDbType.Int)
-                prmTotal(1).Value = selectedDate(0)
-                totalItem = dbMethod.ExecuteScalar("SELECT COUNT(ScheduleId) FROM dbo.MntMachineSchedule WHERE MonthId = @MonthId AND YearId = @YearId", CommandType.Text, prmTotal)
+                If rdMt.Checked Then
+                    Dim prmTotal(1) As SqlParameter
+                    prmTotal(0) = New SqlParameter("@MonthId", SqlDbType.Int)
+                    prmTotal(0).Value = CInt(selectedDate(1))
+                    prmTotal(1) = New SqlParameter("@YearId", SqlDbType.Int)
+                    prmTotal(1).Value = selectedDate(0)
+                    totalItem = dbMethod.ExecuteScalar("SELECT COUNT(ScheduleId) FROM dbo.MntMachineSchedule WHERE MonthId = @MonthId AND YearId = @YearId", CommandType.Text, prmTotal)
 
-                Dim prmDone(1) As SqlParameter
-                prmDone(0) = New SqlParameter("@MonthId", SqlDbType.Int)
-                prmDone(0).Value = CInt(selectedDate(1))
-                prmDone(1) = New SqlParameter("@YearId", SqlDbType.Int)
-                prmDone(1).Value = selectedDate(0)
-                totalCurrent = dbMethod.ExecuteScalar("SELECT COUNT(ScheduleId) FROM dbo.MntMachineSchedule WHERE MonthId = @MonthId AND YearId = @YearId AND TrxId IS NOT NULL", CommandType.Text, prmDone)
+                    Dim prmDone(1) As SqlParameter
+                    prmDone(0) = New SqlParameter("@MonthId", SqlDbType.Int)
+                    prmDone(0).Value = CInt(selectedDate(1))
+                    prmDone(1) = New SqlParameter("@YearId", SqlDbType.Int)
+                    prmDone(1).Value = selectedDate(0)
+                    totalCurrent = dbMethod.ExecuteScalar("SELECT COUNT(ScheduleId) FROM dbo.MntMachineSchedule WHERE MonthId = @MonthId AND YearId = @YearId AND TrxId IS NOT NULL", CommandType.Text, prmDone)
+                Else
+                    Dim prmTotal(1) As SqlParameter
+                    prmTotal(0) = New SqlParameter("@MonthId", SqlDbType.Int)
+                    prmTotal(0).Value = CInt(selectedDate(1))
+                    prmTotal(1) = New SqlParameter("@YearId", SqlDbType.Int)
+                    prmTotal(1).Value = selectedDate(0)
+                    totalItem = dbMethod.ExecuteScalar("SELECT COUNT(ScheduleId) FROM dbo.FacMachineSchedule WHERE MonthId = @MonthId AND YearId = @YearId", CommandType.Text, prmTotal)
+
+                    Dim prmDone(1) As SqlParameter
+                    prmDone(0) = New SqlParameter("@MonthId", SqlDbType.Int)
+                    prmDone(0).Value = CInt(selectedDate(1))
+                    prmDone(1) = New SqlParameter("@YearId", SqlDbType.Int)
+                    prmDone(1).Value = selectedDate(0)
+                    totalCurrent = dbMethod.ExecuteScalar("SELECT COUNT(ScheduleId) FROM dbo.FacMachineSchedule WHERE MonthId = @MonthId AND YearId = @YearId AND TrxId IS NOT NULL", CommandType.Text, prmDone)
+                End If
 
             ElseIf cmbView.SelectedValue = 2 Then 'taping jig
                 Dim prmTotal(1) As SqlParameter
@@ -449,8 +482,11 @@ Public Class Main
     Private Sub btnChecksheet_Click(sender As Object, e As EventArgs) Handles btnChecksheet.Click
         Try
             If cmbView.SelectedValue = 1 Then
-                Dim frmDetail As New MachineMonitoringSystem.MntMchCs()
-                frmDetail.ShowDialog(Me)
+                If rdMt.Checked Then
+                    Dim frmDetail As New MachineMonitoringSystem.MntMchCs()
+                    frmDetail.ShowDialog(Me)
+                End If
+
             Else
                 Dim frmDetail As New MachineMonitoringSystem.MntJigCs()
                 frmDetail.ShowDialog(Me)
@@ -467,9 +503,15 @@ Public Class Main
             Dim trxId As Integer = lsv.Items(lsv.FocusedItem.Index).SubItems(2).Text
 
             If cmbView.SelectedValue = 1 Then
-                Dim frmDetail As New MachineMonitoringSystem.MntTrxDetailMch(0, 0, 0, trxId)
-                frmDetail.fromPmCalendar = True
-                frmDetail.ShowDialog()
+                If rdMt.Checked Then
+                    Dim frmDetail As New MachineMonitoringSystem.MntTrxDetailMch(0, 0, 0, trxId)
+                    frmDetail.fromPmCalendar = True
+                    frmDetail.ShowDialog()
+                Else
+                    Dim frmDetail As New MachineMonitoringSystem.FacTrxDetailMch(0, 0, 0, trxId)
+                    frmDetail.fromPmCalendar = True
+                    frmDetail.ShowDialog()
+                End If
             Else
                 Dim frmDetail As New MachineMonitoringSystem.MntTrxDetailJig(0, 0, 0, trxId)
                 frmDetail.fromPmCalendar = True
@@ -616,23 +658,44 @@ Public Class Main
                                 Dim accomplished As Integer = 0
                                 Dim totalPerWeek As Integer = 0
 
-                                Dim rdrForPm As IDataReader = dbMethod.ExecuteReader("RdMntMachineSchedule", CommandType.StoredProcedure, prmForPm)
+                                If rdMt.Checked Then
+                                    Dim rdrForPm As IDataReader = dbMethod.ExecuteReader("RdMntMachineSchedule", CommandType.StoredProcedure, prmForPm)
 
-                                While rdrForPm.Read
-                                    totalPerWeek += 1
+                                    While rdrForPm.Read
+                                        totalPerWeek += 1
 
-                                    If rdrForPm("TrxId") Is DBNull.Value AndAlso rdrForPm("ActivityBy") Is DBNull.Value AndAlso rdrForPm("ActivityDate") Is DBNull.Value Then
-                                        Dim arrStr(3) As String
-                                        arrStr(0) = rdrForPm("MachineName").ToString
-                                        arrStr(1) = rdrForPm("MachineId")
-                                        arrStr(2) = ""
+                                        If rdrForPm("TrxId") Is DBNull.Value AndAlso rdrForPm("ActivityBy") Is DBNull.Value AndAlso rdrForPm("ActivityDate") Is DBNull.Value Then
+                                            Dim arrStr(3) As String
+                                            arrStr(0) = rdrForPm("MachineName").ToString
+                                            arrStr(1) = rdrForPm("MachineId")
+                                            arrStr(2) = ""
 
-                                        Dim lsvItem As ListViewItem
-                                        lsvItem = New ListViewItem(arrStr)
-                                        lstScheduled(rowScheduled).Items.Add(lsvItem)
-                                    End If
-                                End While
-                                rdrForPm.Close()
+                                            Dim lsvItem As ListViewItem
+                                            lsvItem = New ListViewItem(arrStr)
+                                            lstScheduled(rowScheduled).Items.Add(lsvItem)
+                                        End If
+                                    End While
+                                    rdrForPm.Close()
+
+                                Else
+                                    Dim rdrForPm As IDataReader = dbMethod.ExecuteReader("RdFacMachineSchedule", CommandType.StoredProcedure, prmForPm)
+
+                                    While rdrForPm.Read
+                                        totalPerWeek += 1
+
+                                        If rdrForPm("TrxId") Is DBNull.Value AndAlso rdrForPm("ActivityBy") Is DBNull.Value AndAlso rdrForPm("ActivityDate") Is DBNull.Value Then
+                                            Dim arrStr(3) As String
+                                            arrStr(0) = rdrForPm("MachineCode").ToString
+                                            arrStr(1) = rdrForPm("MachineId")
+                                            arrStr(2) = ""
+
+                                            Dim lsvItem As ListViewItem
+                                            lsvItem = New ListViewItem(arrStr)
+                                            lstScheduled(rowScheduled).Items.Add(lsvItem)
+                                        End If
+                                    End While
+                                    rdrForPm.Close()
+                                End If
 
                                 lstScheduled(rowScheduled).Columns.Item(0).Width = -1
 
@@ -886,23 +949,44 @@ Public Class Main
                                 Dim accomplished As Integer = 0
                                 Dim totalPerWeek As Integer = 0
 
-                                Dim rdrForPm As IDataReader = dbMethod.ExecuteReader("RdMntMachineSchedule", CommandType.StoredProcedure, prmForPm)
+                                If rdMt.Checked Then
+                                    Dim rdrForPm As IDataReader = dbMethod.ExecuteReader("RdMntMachineSchedule", CommandType.StoredProcedure, prmForPm)
 
-                                While rdrForPm.Read
-                                    totalPerWeek += 1
+                                    While rdrForPm.Read
+                                        totalPerWeek += 1
 
-                                    If rdrForPm("TrxId") Is DBNull.Value AndAlso rdrForPm("ActivityBy") Is DBNull.Value AndAlso rdrForPm("ActivityDate") Is DBNull.Value Then
-                                        Dim arrStr(3) As String
-                                        arrStr(0) = rdrForPm("MachineName").ToString
-                                        arrStr(1) = rdrForPm("MachineId")
-                                        arrStr(2) = ""
+                                        If rdrForPm("TrxId") Is DBNull.Value AndAlso rdrForPm("ActivityBy") Is DBNull.Value AndAlso rdrForPm("ActivityDate") Is DBNull.Value Then
+                                            Dim arrStr(3) As String
+                                            arrStr(0) = rdrForPm("MachineName").ToString
+                                            arrStr(1) = rdrForPm("MachineId")
+                                            arrStr(2) = ""
 
-                                        Dim lsvItem As ListViewItem
-                                        lsvItem = New ListViewItem(arrStr)
-                                        lstScheduled(rowScheduled).Items.Add(lsvItem)
-                                    End If
-                                End While
-                                rdrForPm.Close()
+                                            Dim lsvItem As ListViewItem
+                                            lsvItem = New ListViewItem(arrStr)
+                                            lstScheduled(rowScheduled).Items.Add(lsvItem)
+                                        End If
+                                    End While
+                                    rdrForPm.Close()
+
+                                Else
+                                    Dim rdrForPm As IDataReader = dbMethod.ExecuteReader("RdFacMachineSchedule", CommandType.StoredProcedure, prmForPm)
+
+                                    While rdrForPm.Read
+                                        totalPerWeek += 1
+
+                                        If rdrForPm("TrxId") Is DBNull.Value AndAlso rdrForPm("ActivityBy") Is DBNull.Value AndAlso rdrForPm("ActivityDate") Is DBNull.Value Then
+                                            Dim arrStr(3) As String
+                                            arrStr(0) = rdrForPm("MachineCode").ToString
+                                            arrStr(1) = rdrForPm("MachineId")
+                                            arrStr(2) = ""
+
+                                            Dim lsvItem As ListViewItem
+                                            lsvItem = New ListViewItem(arrStr)
+                                            lstScheduled(rowScheduled).Items.Add(lsvItem)
+                                        End If
+                                    End While
+                                    rdrForPm.Close()
+                                End If
 
                                 lstScheduled(rowScheduled).Columns.Item(0).Width = -1
 
@@ -1149,28 +1233,54 @@ Public Class Main
                         prmActDate(0) = New SqlParameter("@ActivityDate", SqlDbType.Date)
                         prmActDate(0).Value = prmDate
 
-                        Dim rdrSchedule As IDataReader = dbMethod.ExecuteReader("RdMntMachineSchedule", CommandType.StoredProcedure, prmActDate)
+                        If rdMt.Checked Then
+                            Dim rdrSchedule As IDataReader = dbMethod.ExecuteReader("RdMntMachineSchedule", CommandType.StoredProcedure, prmActDate)
 
-                        lblCalendar(boxCount).Text = dayCount
+                            lblCalendar(boxCount).Text = dayCount
 
-                        While rdrSchedule.Read
-                            If Not rdrSchedule.Item("ActivityDate") Is DBNull.Value Then
-                                Dim arrStr(3) As String
-                                arrStr(0) = "● " & rdrSchedule("MachineName").ToString
-                                arrStr(1) = rdrSchedule("MachineId")
-                                arrStr(2) = rdrSchedule("TrxId")
+                            While rdrSchedule.Read
+                                If Not rdrSchedule.Item("ActivityDate") Is DBNull.Value Then
+                                    Dim arrStr(3) As String
+                                    arrStr(0) = "● " & rdrSchedule("MachineName").ToString
+                                    arrStr(1) = rdrSchedule("MachineId")
+                                    arrStr(2) = rdrSchedule("TrxId")
 
-                                Dim lsvItem As ListViewItem
-                                lsvItem = New ListViewItem(arrStr)
+                                    Dim lsvItem As ListViewItem
+                                    lsvItem = New ListViewItem(arrStr)
 
-                                If rdrSchedule("MonthId") < selectedDate(1).ToString Then
-                                    lsvItem.ForeColor = Color.Red
+                                    If rdrSchedule("MonthId") < selectedDate(1).ToString Then
+                                        lsvItem.ForeColor = Color.Red
+                                    End If
+
+                                    lstCalendar(boxCount).Items.Add(lsvItem)
                                 End If
+                            End While
+                            rdrSchedule.Close()
 
-                                lstCalendar(boxCount).Items.Add(lsvItem)
-                            End If
-                        End While
-                        rdrSchedule.Close()
+                        Else
+                            Dim rdrSchedule As IDataReader = dbMethod.ExecuteReader("RdFacMachineSchedule", CommandType.StoredProcedure, prmActDate)
+
+                            lblCalendar(boxCount).Text = dayCount
+
+                            While rdrSchedule.Read
+                                If Not rdrSchedule.Item("ActivityDate") Is DBNull.Value Then
+                                    Dim arrStr(3) As String
+                                    arrStr(0) = "● " & rdrSchedule("MachineCode").ToString
+                                    arrStr(1) = rdrSchedule("MachineId")
+                                    arrStr(2) = rdrSchedule("TrxId")
+
+                                    Dim lsvItem As ListViewItem
+                                    lsvItem = New ListViewItem(arrStr)
+
+                                    If rdrSchedule("MonthId") < selectedDate(1).ToString Then
+                                        lsvItem.ForeColor = Color.Red
+                                    End If
+
+                                    lstCalendar(boxCount).Items.Add(lsvItem)
+                                End If
+                            End While
+                            rdrSchedule.Close()
+                        End If
 
                     ElseIf cmbView.SelectedValue = 2 Then 'taping
                         Dim dateString() = firstDayOfMonth.ToString("yyyy-MM-dd").Split("-"c)
@@ -1365,16 +1475,31 @@ Public Class Main
 
             Dim lastDate As Date = New Date(Year(dbMethod.GetServerDate), Month(dbMethod.GetServerDate), System.DateTime.DaysInMonth(Year(dbMethod.GetServerDate), Month(dbMethod.GetServerDate)))
             Dim dayCount As Integer = DateDiff(DateInterval.Day, currentDate, lastDate)
-            Dim rdrMchPending As IDataReader = dbMethod.ExecuteReader("RdMntMachineSchedule", CommandType.StoredProcedure)
-            Dim rdrJigPending As IDataReader = dbMethod.ExecuteReader("RdMntJigSchedule", CommandType.StoredProcedure)
-            Dim lstPending As New List(Of String)
 
-            While rdrMchPending.Read
-                If rdrMchPending("TrxId") Is DBNull.Value AndAlso rdrMchPending("MonthId").Equals(Month(dbMethod.GetServerDate)) Then
-                    lstPending.Add(" ● " & rdrMchPending("MachineName").ToString)
-                End If
-            End While
-            rdrMchPending.Close()
+            Dim lstPending As New List(Of String)
+            lstPending.Clear()
+
+            If rdMt.Checked Then
+                Dim rdrMchPending As IDataReader = dbMethod.ExecuteReader("RdMntMachineSchedule", CommandType.StoredProcedure)
+
+                While rdrMchPending.Read
+                    If rdrMchPending("TrxId") Is DBNull.Value AndAlso rdrMchPending("MonthId").Equals(Month(dbMethod.GetServerDate)) Then
+                        lstPending.Add(" ● " & rdrMchPending("MachineName").ToString)
+                    End If
+                End While
+                rdrMchPending.Close()
+            Else
+                Dim rdrMchPending As IDataReader = dbMethod.ExecuteReader("RdFacMachineSchedule", CommandType.StoredProcedure)
+
+                While rdrMchPending.Read
+                    If rdrMchPending("TrxId") Is DBNull.Value AndAlso rdrMchPending("MonthId").Equals(Month(dbMethod.GetServerDate)) Then
+                        lstPending.Add(" ● " & rdrMchPending("MachineCode").ToString)
+                    End If
+                End While
+                rdrMchPending.Close()
+            End If
+
+            Dim rdrJigPending As IDataReader = dbMethod.ExecuteReader("RdMntJigSchedule", CommandType.StoredProcedure)
 
             While rdrJigPending.Read
                 If rdrJigPending("TrxId") Is DBNull.Value AndAlso rdrJigPending("MonthId").Equals(Month(dbMethod.GetServerDate)) Then
@@ -1413,6 +1538,34 @@ Public Class Main
             If IsIncomingMonthEnd(currentDate) Then
                 ShowNotification()
             End If
+        End If
+    End Sub
+
+    Private Sub rdMt_CheckedChanged(sender As Object, e As EventArgs) Handles rdMt.CheckedChanged, rdFacility.CheckedChanged
+        cmbView.DataSource = Nothing
+        dicType.Clear()
+
+        If rdMt.Checked Then
+            dicType.Add(" Machine", 1)
+            dicType.Add(" Taping", 2)
+            dicType.Add(" QCF", 3)
+            dicType.Add(" Steering", 4)
+            dicType.Add(" Applicator", 5)
+            dicType.Add(" CSW/MR", 6)
+            cmbView.DisplayMember = "Key"
+            cmbView.ValueMember = "Value"
+            cmbView.DataSource = New BindingSource(dicType, Nothing)
+
+            cmbView.Enabled = True
+            btnChecksheet.Enabled = True
+        ElseIf rdFacility.Checked Then
+            dicType.Add(" Machine", 1)
+            cmbView.DisplayMember = "Key"
+            cmbView.ValueMember = "Value"
+            cmbView.DataSource = New BindingSource(dicType, Nothing)
+
+            cmbView.Enabled = False
+            btnChecksheet.Enabled = False
         End If
     End Sub
 
