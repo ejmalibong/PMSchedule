@@ -54,10 +54,14 @@ Public Class Main
                 rdFacility.Visible = False
                 rdMt.Checked = True
 
+                lblVersion.Visible = True
+
             Case 3 'facility
                 rdMt.Visible = False
                 rdFacility.Visible = False
                 rdFacility.Checked = True
+
+                lblVersion.Visible = False
         End Select
 
         cmbView.SelectedValue = 1 'default view to machine schedule
@@ -458,7 +462,6 @@ Public Class Main
             selectedDate(2) = CInt(CDate(DateSerial(txtYear.Text, cmbMonth.SelectedValue, maxDays)).ToString("dd"))
 
             If Integer.Parse(txtYear.Text.Trim) = selectedDate(0) AndAlso Integer.Parse(cmbMonth.SelectedValue) = selectedDate(1) Then
-
             Else
                 selectedDate(0) = txtYear.Text
                 selectedDate(1) = cmbMonth.SelectedValue
@@ -486,7 +489,6 @@ Public Class Main
                     Dim frmDetail As New MachineMonitoringSystem.MntMchCs()
                     frmDetail.ShowDialog(Me)
                 End If
-
             Else
                 Dim frmDetail As New MachineMonitoringSystem.MntJigCs()
                 frmDetail.ShowDialog(Me)
@@ -676,7 +678,6 @@ Public Class Main
                                         End If
                                     End While
                                     rdrForPm.Close()
-
                                 Else
                                     Dim rdrForPm As IDataReader = dbMethod.ExecuteReader("RdFacMachineSchedule", CommandType.StoredProcedure, prmForPm)
 
@@ -967,7 +968,6 @@ Public Class Main
                                         End If
                                     End While
                                     rdrForPm.Close()
-
                                 Else
                                     Dim rdrForPm As IDataReader = dbMethod.ExecuteReader("RdFacMachineSchedule", CommandType.StoredProcedure, prmForPm)
 
@@ -1217,7 +1217,6 @@ Public Class Main
                                 End If
                             End If
                         End If
-
                     Else
                         pnlCalendar(boxCount).BackColor = Drawing.SystemColors.Window
                         lstCalendar(boxCount).BackColor = Drawing.SystemColors.Window
@@ -1256,7 +1255,6 @@ Public Class Main
                                 End If
                             End While
                             rdrSchedule.Close()
-
                         Else
                             Dim rdrSchedule As IDataReader = dbMethod.ExecuteReader("RdFacMachineSchedule", CommandType.StoredProcedure, prmActDate)
 
@@ -1558,6 +1556,8 @@ Public Class Main
 
             cmbView.Enabled = True
             btnChecksheet.Enabled = True
+
+            lblVersion.Visible = True
         ElseIf rdFacility.Checked Then
             dicType.Add(" Machine", 1)
             cmbView.DisplayMember = "Key"
@@ -1566,6 +1566,8 @@ Public Class Main
 
             cmbView.Enabled = False
             btnChecksheet.Enabled = False
+
+            lblVersion.Visible = False
         End If
     End Sub
 

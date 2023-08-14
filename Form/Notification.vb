@@ -1,9 +1,4 @@
-﻿Imports System
-Imports System.Collections.Generic
-Imports System.Drawing
-Imports System.Windows.Forms
-
-Partial Public Class Notification
+﻿Partial Public Class Notification
     Inherits Form
 
     Private Shared ReadOnly OpenNotifications As List(Of Notification) = New List(Of Notification)()
@@ -12,7 +7,7 @@ Partial Public Class Notification
     Private _currentForegroundWindow As IntPtr
 
     ''' <summary>
-    ''' 
+    '''
     ''' </summary>
     ''' <param name="headerText"></param>
     ''' <param name="detailText"></param>
@@ -46,6 +41,7 @@ Partial Public Class Notification
     End Sub
 
 #Region "Methods"
+
     ''' <summary>
     ''' Displays the form
     ''' </summary>
@@ -58,9 +54,11 @@ Partial Public Class Notification
 
         MyBase.Show()
     End Sub
+
 #End Region
 
 #Region "Event Handlers"
+
     Private Sub lblNotifText_Click(ByVal sender As Object, ByVal e As EventArgs) Handles lblHeader.Click
         Close()
     End Sub
@@ -120,6 +118,7 @@ Partial Public Class Notification
         OpenNotifications.Add(Me)
         tmrNotification.Start()
     End Sub
+
     Private Sub Notification_MouseClick(sender As Object, e As MouseEventArgs) Handles MyBase.MouseClick
         Close()
     End Sub
@@ -132,9 +131,11 @@ Partial Public Class Notification
         _animator.Duration = 0
         _animator.Direction = FormAnimator.AnimationDirection.Down
     End Sub
+
     Private Sub tmrNotification_Tick(ByVal sender As Object, ByVal e As EventArgs) Handles tmrNotification.Tick
         Close()
     End Sub
+
 #End Region
 
 End Class

@@ -1,7 +1,7 @@
-﻿Imports System
-Imports System.Runtime.InteropServices
+﻿Imports System.Runtime.InteropServices
 
 Friend Module NativeMethods
+
     ''' <summary>
     ''' Windows API function to animate a window.
     ''' </summary>

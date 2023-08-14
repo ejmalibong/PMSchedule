@@ -1,8 +1,6 @@
 ﻿'Code originally retrieved from http://www.vbforums.com/showthread.php?t=547778 - no license information supplied
 
-Imports System
 Imports System.ComponentModel
-Imports System.Windows.Forms
 
 ''' <summary>
 ''' Animates a form when it is shown, hidden or closed
@@ -13,6 +11,7 @@ Imports System.Windows.Forms
 Public NotInheritable Class FormAnimator
 
 #Region "Types"
+
     ''' <summary>
     ''' The directions in which the Roll and Slide animations can be shown
     ''' </summary>
@@ -21,28 +20,34 @@ Public NotInheritable Class FormAnimator
     ''' </remarks>
     <Flags>
     Public Enum AnimationDirection
+
         ''' <summary>
         ''' From left to right
         ''' </summary>
         Right = &H1
+
         ''' <summary>
         ''' From right to left
         ''' </summary>
         Left = &H2
+
         ''' <summary>
         ''' From top to bottom
         ''' </summary>
         Down = &H4
+
         ''' <summary>
         ''' From bottom to top
         ''' </summary>
         Up = &H8
+
     End Enum
 
     ''' <summary>
     ''' The methods of animation available.
     ''' </summary>
     Public Enum AnimationMethod
+
         ''' <summary>
         ''' Rolls out from edge when showing and into edge when hiding
         ''' </summary>
@@ -50,10 +55,12 @@ Public NotInheritable Class FormAnimator
         ''' This is the default animation method and requires a direction
         ''' </remarks>
         Roll = &H0
+
         ''' <summary>
         ''' Expands out from center when showing and collapses into center when hiding
         ''' </summary>
         Center = &H10
+
         ''' <summary>
         ''' Slides out from edge when showing and slides into edge when hiding
         ''' </summary>
@@ -61,14 +68,18 @@ Public NotInheritable Class FormAnimator
         ''' Requires a direction
         ''' </remarks>
         Slide = &H40000
+
         ''' <summary>
         ''' Fades from transaprent to opaque when showing and from opaque to transparent when hiding
         ''' </summary>
         Fade = &H80000
+
     End Enum
+
 #End Region
 
 #Region "Constants"
+
     ''' <summary>
     ''' Activate the form
     ''' </summary>
@@ -78,6 +89,7 @@ Public NotInheritable Class FormAnimator
     ''' Hide the form
     ''' </summary>
     Private Const AwHide As Integer = &H10000
+
     ''' <summary>
     ''' The number of milliseconds over which the animation occurs if no value is specified
     ''' </summary>
@@ -86,10 +98,12 @@ Public NotInheritable Class FormAnimator
 #End Region
 
 #Region "Variables"
+
     ''' <summary>
     ''' The form to be animated
     ''' </summary>
     Private ReadOnly _form As Form
+
     ''' <summary>
     ''' The direction in which to Roll or Slide the form
     ''' </summary>
@@ -104,9 +118,11 @@ Public NotInheritable Class FormAnimator
     ''' The animation method used to show and hide the form
     ''' </summary>
     Private _method As AnimationMethod
+
 #End Region
 
 #Region "Proerties"
+
     ''' <summary>
     ''' Gets or Sets the direction in which the animation is performed
     ''' </summary>
@@ -169,9 +185,11 @@ Public NotInheritable Class FormAnimator
             _method = value
         End Set
     End Property
+
 #End Region
 
 #Region "Constructors"
+
     ''' <summary>
     ''' Creates a new <b>FormAnimator</b> object for the specified form
     ''' </summary>
@@ -235,9 +253,11 @@ Public NotInheritable Class FormAnimator
         Me.New(form, method, duration)
         _direction = direction
     End Sub
+
 #End Region
 
 #Region "Event Handlers"
+
     ''' <summary>
     ''' Animates the form automatically when it closes
     ''' </summary>
@@ -277,6 +297,7 @@ Public NotInheritable Class FormAnimator
             NativeMethods.AnimateWindow(_form.Handle, _duration, flags)
         End If
     End Sub
+
 #End Region
 
 End Class
